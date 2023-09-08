@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "hi there!"
+date:   2023-09-08 12:21:35 -0700
+categories: random
+---
+Hi there! This is going to be a sort of history of what I do during my programming career. There's no guarantee that I'll update this frequently but if I do, this is probably going to be really cool.
+
+I'm going to log most of what I do here, so there's definitely going to be some bad code that I never refactor, some random stuff, but ultimately I hope it'll end up being something really cool to look back on.
+
+Alright, it's getting late cos I procrastinated on my homework. Hopefully I type something up tomorrow with some real red meat on it. Bye for now!
