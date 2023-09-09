@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Komeko: A Modern BASIC Interpreter"
+title: "koneko: a modern BASIC interpreter"
 date: 2023-09-08 22:00:35 -0700
 categories: rust koneko basic
 ---
