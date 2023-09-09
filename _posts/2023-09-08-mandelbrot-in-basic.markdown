@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Rendering the Mandelbrot Set in BASIC"
+title: "Komeko: A Modern BASIC Interpreter"
 date: 2023-09-08 22:00:35 -0700
 categories: rust koneko basic
 ---
@@ -23,7 +23,7 @@ These differences are mostly convenience features (in my opinion), and the langu
 
 The interpreter is implemented as a tree-walker (cos it's easy) in Rust, and all rendering commands draw to a buffer of `u32` which is then blitted to an SDL surface. This separation should make it easier to later on compile to WASM and use in a webpage (fingers crossed).
 
-Alright, let's get to the Mandelbrot Set. I feel that it's a sort of acid test for languages, because it shows that a good amount of language constructs work, like comparisons, loops, and output, and also because it's so simple to implement. 
+Alright, let's get to an example program. I feel that rendering the Mandelbrot Set is a sort of acid test for languages, because it shows that a good amount of language constructs work, like comparisons, loops, and output, and also because it's so simple to implement. 
 
 | ![Mandelbrot Set program in koneko](https://cdn.upload.systems/uploads/2b66XgcU.png) |
 |:------------------------------------------------------------------------------------:|
