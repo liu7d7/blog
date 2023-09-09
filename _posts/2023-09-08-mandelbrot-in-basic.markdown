@@ -31,4 +31,4 @@ Alright, let's get to the Mandelbrot Set. I feel that it's a sort of acid test f
 
 This code is translated straight from the pseudocode listed on the [Wikipedia page](https://en.wikipedia.org/wiki/Mandelbrot_set) for the Mandelbrot set, and you can see the result below!
 
-![Video of the fractal being rendered](https://cdn.upload.systems/uploads/R5JBmo0Z.mp4)
+<video src="https://cdn.upload.systems/uploads/R5JBmo0Z.mp4" controls="controls"></video>
