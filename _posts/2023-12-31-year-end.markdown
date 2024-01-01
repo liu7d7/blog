@@ -61,7 +61,7 @@ I started up coding some of my old projects again, and extended my C# engine to
 support deformable meshes. I renamed the project [new](https://github.com/liu7d7/new),
 because I couldn't be arsed to come up with a new name.
 
-| [![new](http://img.youtube.com/vi/ZUMDlGhK6R4/0.jpg)](https://www.youtube.com/watch?v=ZUMDlGhK6R4) |
+| [![new](https://github.com/liu7d7/blog/blob/master/firefox_XOQzgixVLY.png?raw=true)](https://www.youtube.com/watch?v=ZUMDlGhK6R4) |
 |:--------------------------------------------------------------------------------------------------:|
 |                                       *A demo of the engine*                                       |
 
@@ -77,7 +77,7 @@ During the limited free-time I had, I continued working on that game engine, add
 support for instanced rendering (using UBOs, though, which is not ideal). The 
 amount of trees and snowballs I could render was never higher!
 
-| [![new](http://img.youtube.com/vi/NjJwF9eVuf4/0.jpg)](https://www.youtube.com/watch?v=NjJwF9eVuf4) |
+| [![new](https://github.com/liu7d7/blog/blob/master/firefox_2BdUmPgeBg.png?raw=true)](https://www.youtube.com/watch?v=NjJwF9eVuf4) |
 |:--------------------------------------------------------------------------------------------------:|
 |                                          *Tennis for Two*                                          |
 
@@ -140,7 +140,9 @@ line and polygon fill graphics commands, and ran in Rust. It was a really fun
 project to make and I sometimes still use it to make some simple visual stuff
 or toy around with cool syntax. You can see a demo of it [here](https://www.youtube.com/watch?v=vXzDkM7uB44).
 
-[![new](http://img.youtube.com/vi/vXzDkM7uB44/0.jpg)](https://www.youtube.com/watch?v=vXzDkM7uB44)
+| [![new](https://github.com/liu7d7/blog/blob/master/firefox_dnkAqBhhUA.png?raw=true)](https://www.youtube.com/watch?v=vXzDkM7uB44) |
+|:--------------------------------------------------------------------------------------------------:|
+|                                       *A demo... of* koneko                                        |
 
 ### September
 
@@ -189,7 +191,7 @@ actually really nice to work with, with a low barrier to entry and super nice
 examples. I integrated that dithering code I used for [ember](https://github.com/liu7d7/ember/), 
 and it looks really nice!
 
-| ![for-realsies](https://github.com/liu7d7/blog/blob/master/Capture%20d'%C3%A9cran%202023-12-31%20210949.png?raw=true) |
+| ![for-realsies](https://github.com/liu7d7/blog/blob/master/Penki_G5XsfkgQqC.png?raw=true) |
 |:---------------------------------------------------------------------------------------------------------------------:|
 |                                            *The current state of the game*                                            |
 
@@ -197,6 +199,6 @@ I also started some projects with making some custom programming languages, and
 this time I haven't yet abandoned the projects. You can check out that project
 [here](https://github.com/liu7d7/ami/).
 
-| ![ami code](https://github.com/liu7d7/blog/blob/master/Capture%20d'%C3%A9cran%202023-12-31%20211210.png?raw=true) |
+| ![ami code](https://github.com/liu7d7/blog/blob/master/clion64_Q7tevdjPSV.png?raw=true) |
 |:-----------------------------------------------------------------------------------------------------------------:|
 |                                                  *Some ami code*                                                  |
