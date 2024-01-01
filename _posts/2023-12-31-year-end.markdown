@@ -11,7 +11,7 @@ Welp, another year has passed. I'm just going to dump as much of what I can
 remember of it here, grouped by month. Let's see how many projects I started
 (and how many I finished, which might turn out to be less than I thought.)
 
-This is going to be super rambly cos I'm starting this late.
+This is going to be super rambly.
 
 ### January
 
@@ -61,9 +61,9 @@ I started up coding some of my old projects again, and extended my C# engine to
 support deformable meshes. I renamed the project [new](https://github.com/liu7d7/new),
 because I couldn't be arsed to come up with a new name.
 
-| <iframe width="560" height="315" src="https://www.youtube.com/embed/ZUMDlGhK6R4?si=Q_0EPM9IdvXX8FhZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> |
-|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|                                                                                                                                  *A video of the app*                                                                                                                                   |
+| [![new](http://img.youtube.com/vi/ZUMDlGhK6R4/0.jpg)](https://www.youtube.com/watch?v=ZUMDlGhK6R4) |
+|:--------------------------------------------------------------------------------------------------:|
+|                                       *A demo of the engine*                                       |
 
 ### April
 
@@ -76,6 +76,10 @@ AP Computer Science Principles test, which was actually really fun to make.
 During the limited free-time I had, I continued working on that game engine, adding
 support for instanced rendering (using UBOs, though, which is not ideal). The 
 amount of trees and snowballs I could render was never higher!
+
+| [![new](http://img.youtube.com/vi/NjJwF9eVuf4/0.jpg)](https://www.youtube.com/watch?v=NjJwF9eVuf4) |
+|:--------------------------------------------------------------------------------------------------:|
+|                                          *Tennis for Two*                                          |
 
 ### May
 
@@ -136,9 +140,7 @@ line and polygon fill graphics commands, and ran in Rust. It was a really fun
 project to make and I sometimes still use it to make some simple visual stuff
 or toy around with cool syntax. You can see a demo of it [here](https://www.youtube.com/watch?v=vXzDkM7uB44).
 
-| <iframe width="560" height="315" src="https://www.youtube.com/embed/vXzDkM7uB44?si=FrwFP927ZFCzT4v9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> |
-|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|                                                                                                                                 *A demo... of* koneko                                                                                                                                  |
+[![new](http://img.youtube.com/vi/vXzDkM7uB44/0.jpg)](https://www.youtube.com/watch?v=vXzDkM7uB44)
 
 ### September
 
