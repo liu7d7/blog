@@ -1,0 +1,200 @@
+---
+layout: post
+title: "looking back on 2023"
+date: 2023-12-31 17:11:35 -0700
+categories: end-of-year
+---
+
+### It's the last day of the year.
+
+Welp, another year has passed. I'm just going to dump as much of what I can 
+remember of it here, grouped by month. Let's see how many projects I started
+(and how many I finished, which might turn out to be less than I thought.)
+
+This is going to be super rambly cos I'm starting this late.
+
+### January
+
+In January, I was just getting back into school. I got super obsessed with 
+[Nathan Barnatt](https://www.youtube.com/c/barnatt)'s dance videos for some 
+reason, and that got me into Madeon and Yelle's music. 
+
+I learned how to write C++. It wasn't very good C++, but it was C++ nonetheless, 
+and I tried making a game engine with it, which was riddled with memory leaks
+and unsafe code. I ended up abandoning the project within a week or two. Why
+is it that I abandon projects after about a week? Is it because it's that 
+awkward period between seeing that I've made a minimum viable product and
+having made a finished, polished project? I think so. Oh well.
+
+### February
+
+I made my school's varsity volleyball team in February. I was so happy because
+it meant that my quitting of club volleyball didn't make me worse at the sport.
+(It didn't make me better either, but at least I didn't get worse.) During this
+time, I had less and less time to do programming projects due to school starting
+up again, AP tests looming in the next three months, and volleyball games ending
+around nine at night.
+
+In this month, I tried out making a little visual program called [ember](https://github.com/liu7d7/ember) 
+whose main premise was that it was post-processed with an eight-color palette. 
+It looked super cool, and it's one of the projects I'm most proud of to this day.
+
+| ![ember](https://github.com/liu7d7/blog/blob/master/unnamed.png?raw=true) |
+|:-------------------------------------------------------------------------:|
+|                      *A screenshot of ember running*                      |
+
+Another thing I did was learn React, which I used to make a [website](https://liu7d7.github.io/french-subj/) 
+to help me review some French.
+
+I also messed around with using C to make some data structures from scratch, which
+was a fun exercise, and it made me able to program some larger projects in C later on.
+You can find the repo [here](https://github.com/liu7d7/structs-in-c), though I'm 
+not very proud of the implementations there.
+
+### March
+
+I got COVID during March, which gave me a good two weeks to do
+whatever the heck I wanted, as long as it was in my room. Now, this wasn't any
+different to what I was already doing, but at least I didn't have to go to school.
+
+I started up coding some of my old projects again, and extended my C# engine to
+support deformable meshes. I renamed the project [new](https://github.com/liu7d7/new),
+because I couldn't be arsed to come up with a new name.
+
+| <iframe width="560" height="315" src="https://www.youtube.com/embed/ZUMDlGhK6R4?si=Q_0EPM9IdvXX8FhZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> |
+|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|                                                                                                                                  *A video of the app*                                                                                                                                   |
+
+### April
+
+During April, I was cramming as hard as I could for AP tests, which were coming
+up in just a month, meaning I couldn't program as much. I did have one significant
+project though, which was a 1000-liner game of Tennis for Two programmed in F#
+using OpenGL for graphics. The game was for the free-response assignment to the
+AP Computer Science Principles test, which was actually really fun to make.
+
+During the limited free-time I had, I continued working on that game engine, adding
+support for instanced rendering (using UBOs, though, which is not ideal). The 
+amount of trees and snowballs I could render was never higher!
+
+### May
+
+I feel like I had a local maxima in May, honestly. I had much more time to do
+projects, because AP tests were over within the first week of the month, and I
+knew I could breeze through the school finals. Making things better for my
+programming career, the volleyball season also ended, which gave me a lot more
+free time. I started up running, and though I wasn't very good, I kept at it. 
+
+During this month, I was applying to become an officer in my school's CS club,
+and one of the main things I did was work on a guest lecture for them. The
+presentation was about OpenGL, and to give some extra flair to it, I made the
+whole [presentation](https://github.com/liu7d7/lecture) _in_ OpenGL. That was 
+very fun indeed, and I think it was received well. I made a different guest 
+lecture presentation for a [fractal lecture](https://www.youtube.com/watch?v=N4bHzI8Z0ik)
+for the math club as well.
+
+| ![lecture](https://github.com/liu7d7/blog/blob/master/lecture.png?raw=true) |
+|:---------------------------------------------------------------------------:|
+|                      *The title screen of the lecture*                      |
+
+### June
+
+School's out! Yay! Let's see what I did in June. I got back into C++, and made a
+little demo program that could do skeletal animation, which was really cool, but
+I didn't want to continue that project. I also started up trying to make different
+programming languages, and I had help from one of my friends, Aadi Yadav.
+
+I also made it as a CS club officer, and started a course on digital circuits and
+boolean logic at UCLA, which was actually really fun.
+
+### July
+
+The main thing I tried out in July was doing some freelance work on UpWork. I
+actually got a job offer really quick, which was nice. The project was making a
+ring fit around the ring finger of a video of a hand, using OpenCV to find joints
+and OpenGL to render the ring. 
+
+I learned a lot about linear algebra and how matrices work with this project,
+and it was fascinating to do, and I had the potential of earning $240 for
+the job.
+
+Sadly, I never read the terms and conditions before taking the job, so I never
+found out that you had to be over 18 to get paid. How unfortunate.
+
+### August
+
+This month, I took a brilliant trip to China with my family. We climbed mountains, 
+ran in parks, and ate some Chinese BBQ. I also developed an addiction to
+eggplants, which I will now ramble about. The restaurant fried them or something,
+which turned out brilliant because the skin and open faces of the inside of the
+eggplant were crispy and the middle was soft and fluffy. The sweet and sour sauce
+was so good too, and it really made the dish. Peppercorns and some sort of green herb added that
+little extra. I think I've dedicated enough of this to eggplants now, though.
+
+Another thing I did was make [koneko](https://github.com/liu7d7/koneko), a little BASIC interpreter that had easy-to-use
+line and polygon fill graphics commands, and ran in Rust. It was a really fun
+project to make and I sometimes still use it to make some simple visual stuff
+or toy around with cool syntax. You can see a demo of it [here](https://www.youtube.com/watch?v=vXzDkM7uB44).
+
+| <iframe width="560" height="315" src="https://www.youtube.com/embed/vXzDkM7uB44?si=FrwFP927ZFCzT4v9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> |
+|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|                                                                                                                                 *A demo... of* koneko                                                                                                                                  |
+
+### September
+
+School started up again, and I had to endure my school's infamous Honors Chemistry
+teacher. I failed my first test, with a score of about 53%. Goddamn it. That set
+me up for a semester of self-loathing and stress. And no programming to give me
+a break, either. My social life suffered and I think I had the most anxiety 
+(social anxiety included) during this time too.
+
+### October
+
+My grade wasn't suffering as much this month, so I got to work on a [game](https://github.com/liu7d7/hana)
+engine in Rust. I got to learn that Rust is actually a brilliant language and 
+it's just so much nicer compared to C++. You don't have to worry about memory
+leaks or going out of bounds or anything, and it's just such a joy to write
+when you're not fighting with the borrow checker. I'd rather fight with said
+borrow checker than try to track down where a nullptr sneaked in or where I'm
+leaking memory, though.
+
+### November
+
+Ah, AMC 10 month. I failed. That's all I want to say.
+
+I also went on a day trip to San Francisco for me and my friend's birthday, 
+which was absolutely fantastic. We did a sort of thing where we raced to do a 
+set of specific tasks, and though my team lost, we had so much fun. From eating
+a whole raw serrano and throwing up to taking group pictures
+
+### December
+
+This is the section that'll have the most mustard on it. I feel like this month
+was the peak of my 2023. For physical education, I joined a dance group with some
+friends and did k-pop, which was really enjoyable. It helped me gain some new 
+friends and learn how to dance at the same time, and was some much-needed social
+time during finals week.
+
+Speaking of finals, I actually didn't fail them. Though I was stressed because 
+I didn't study as much as I probably should have for some of them, the went fine,
+and I did surprisingly well on the chemistry final. 96%. That brought my grade
+heavily into the A category, which made me happy but not that happy.
+
+For programming, I went back to C# for a game engine project called 
+[for-realsies](https://github.com/liu7d7/for-realsies) (you can tell I'm frustrated 
+with giving up), and this time I integrated the Bepu Physics engine, which is 
+actually really nice to work with, with a low barrier to entry and super nice 
+examples. I integrated that dithering code I used for [ember](https://github.com/liu7d7/ember/), 
+and it looks really nice!
+
+| ![for-realsies](https://github.com/liu7d7/blog/blob/master/Capture%20d'%C3%A9cran%202023-12-31%20210949.png?raw=true) |
+|:---------------------------------------------------------------------------------------------------------------------:|
+|                                            *The current state of the game*                                            |
+
+I also started some projects with making some custom programming languages, and 
+this time I haven't yet abandoned the projects. You can check out that project
+[here](https://github.com/liu7d7/ami/).
+
+| ![ami code](https://github.com/liu7d7/blog/blob/master/Capture%20d'%C3%A9cran%202023-12-31%20211210.png?raw=true) |
+|:-----------------------------------------------------------------------------------------------------------------:|
+|                                                  *Some ami code*                                                  |

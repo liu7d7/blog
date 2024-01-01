@@ -8,7 +8,7 @@ categories: rust koneko basic
 The past few days, I've been working on a [BASIC interpreter](https://www.github.com/liu7d7/koneko), which I call koneko (kitten in Japanese). I wanted it to be like the classic BASIC language you'd find on a Commodore system or GW-BASIC on the IBM PC, but with some more modern
 features in both the language and the editor.
 
-| ![koneko editor](https://cdn.upload.systems/uploads/k95PyEVz.png) |
+| ![koneko editor](https://github.com/liu7d7/blog/blob/master/k95PyEVz.png?raw=true) |
 |:-----------------------------------------------------------------:|
 |                *A screenshot of the koneko editor*                |
 
@@ -23,12 +23,12 @@ These differences are mostly convenience features (in my opinion), and the langu
 
 The interpreter is implemented as a tree-walker (cos it's easy) in Rust, and all rendering commands draw to a buffer of `u32` which is then blitted to an SDL surface. This separation should make it easier to later on compile to WASM and use in a webpage (fingers crossed).
 
-Alright, let's get to an example program. I feel that rendering the Mandelbrot Set is a sort of acid test for languages, because it shows that a good amount of language constructs work, like comparisons, loops, and output, and also because it's so simple to implement. 
+Alright, let's get to an example program. I feel that rendering the Mandelbrot Set is a sort of acid test for languages, because it shows that a good amount of language constructs work, like comparisons, loops, and output, and also because it's so simple to implement.
 
-| ![Mandelbrot Set program in koneko](https://cdn.upload.systems/uploads/2b66XgcU.png) |
+| ![Mandelbrot Set program in koneko](https://github.com/liu7d7/blog/blob/master/2b66XgcU.png?raw=true) |
 |:------------------------------------------------------------------------------------:|
 |                *A listing of the program that generates the fractal*                 |
 
 This code is translated straight from the pseudocode listed on the [Wikipedia page](https://en.wikipedia.org/wiki/Mandelbrot_set) for the Mandelbrot set, and you can see the result below!
 
-<video src="https://cdn.upload.systems/uploads/R5JBmo0Z.mp4" controls="controls" style="max-width: 100%;"></video>
+<video src="https://github.com/liu7d7/blog/raw/master/R5JBmo0Z.mp4" controls="controls" style="max-width: 100%;"></video>
