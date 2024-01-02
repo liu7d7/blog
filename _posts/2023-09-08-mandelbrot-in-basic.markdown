@@ -1,8 +1,10 @@
 ---
 layout: post
 title: "koneko: a modern BASIC interpreter"
+subtitle: "it does graphics, too!"
 date: 2023-09-08 22:00:35 -0700
 categories: rust koneko basic
+background: "../firefox_SDkXsTBoge.png"
 ---
 
 The past few days, I've been working on a [BASIC interpreter](https://www.github.com/liu7d7/koneko), which I call koneko (kitten in Japanese). I wanted it to be like the classic BASIC language you'd find on a Commodore system or GW-BASIC on the IBM PC, but with some more modern
