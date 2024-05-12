@@ -1,19 +1,27 @@
 {
   "files": {
-    "main.css": "/blog/static/css/main.5e9612e6.css",
-    "main.js": "/blog/static/js/main.49a7d30e.js",
-    "static/media/IosevkaTermCurly-SemiBold.ttf": "/blog/static/media/IosevkaTermCurly-SemiBold.3aa0a977036556b84927.ttf",
-    "static/media/halftone.png": "/blog/static/media/halftone.8200c71794da01617f63.png",
-    "static/media/sf-ui-display-heavy-586470160b9e5.otf": "/blog/static/media/sf-ui-display-heavy-586470160b9e5.231bc1a484977910f09b.otf",
-    "static/media/sf-ui-display-medium-58646be638f96.otf": "/blog/static/media/sf-ui-display-medium-58646be638f96.32f938759a1b1b8ce03b.otf",
-    "static/media/halftoning expl.png": "/blog/static/media/halftoning expl.d133c2f3231ae0b18469.png",
-    "static/media/tosuto.png": "/blog/static/media/tosuto.01e6cbe2d3827717b1dd.png",
-    "index.html": "/blog/index.html",
-    "main.5e9612e6.css.map": "/blog/static/css/main.5e9612e6.css.map",
-    "main.49a7d30e.js.map": "/blog/static/js/main.49a7d30e.js.map"
+    "main.css": "/static/css/main.9f294270.css",
+    "main.js": "/static/js/main.07bd95cf.js",
+    "static/media/IosevkaTermCurly-SemiBold.ttf": "/static/media/IosevkaTermCurly-SemiBold.3aa0a977036556b84927.ttf",
+    "static/media/welcome_sm.png": "/static/media/welcome_sm.7c58e641cac5857b94bf.png",
+    "static/media/hana.png": "/static/media/hana.76f260979c4f7f1a7010.png",
+    "static/media/welcome.png": "/static/media/welcome.89bf0c36b4e050536d63.png",
+    "static/media/hana_final.jpg": "/static/media/hana_final.38625c2ee2f2747b0b15.jpg",
+    "static/media/halftone.png": "/static/media/halftone.8200c71794da01617f63.png",
+    "static/media/sf-ui-display-heavy-586470160b9e5.otf": "/static/media/sf-ui-display-heavy-586470160b9e5.231bc1a484977910f09b.otf",
+    "static/media/sf-ui-display-medium-58646be638f96.otf": "/static/media/sf-ui-display-medium-58646be638f96.32f938759a1b1b8ce03b.otf",
+    "static/media/desmos.png": "/static/media/desmos.8fae8d39cc3f79809d9d.png",
+    "static/media/cube.png": "/static/media/cube.412ea59a18319c5297af.png",
+    "static/media/halftoning expl.png": "/static/media/halftoning expl.d133c2f3231ae0b18469.png",
+    "static/media/tosuto.png": "/static/media/tosuto.01e6cbe2d3827717b1dd.png",
+    "static/media/after_lod.png": "/static/media/after_lod.09a053666824b90e8232.png",
+    "static/media/task_man.png": "/static/media/task_man.2dbf1a45a10843a3fa95.png",
+    "index.html": "/index.html",
+    "main.9f294270.css.map": "/static/css/main.9f294270.css.map",
+    "main.07bd95cf.js.map": "/static/js/main.07bd95cf.js.map"
   },
   "entrypoints": [
-    "static/css/main.5e9612e6.css",
-    "static/js/main.49a7d30e.js"
+    "static/css/main.9f294270.css",
+    "static/js/main.07bd95cf.js"
   ]
 }
