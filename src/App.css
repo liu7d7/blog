@@ -1,0 +1,36 @@
+@font-face {
+  font-family: 'SF UI Display';
+  src: url('./assets/sf-ui-display-medium-58646be638f96.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.sf-ui-reg {
+  font-family: 'SF UI Display', sans-serif
+}
+
+@font-face {
+  font-family: 'SF UI Bold';
+  src: url('./assets/sf-ui-display-heavy-586470160b9e5.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.sf-ui-bold {
+  font-family: 'SF UI Bold', sans-serif
+}
+
+@font-face {
+  font-family: 'Iosevka';
+  src: url('./assets/IosevkaTermCurly-SemiBold.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.iosevka {
+  font-family: 'Iosevka', sans-serif
+}
+
+.w-1-10 {
+  width: 10%
+}
