@@ -1,0 +1,22 @@
+<h1>halftoning in glsl</h1>
+<h2>14 april 2024</h2>
+<p>
+Recently I've been working on a game using OpenGL and C. I've been having great fun making my own data structures and re-implementing all the math from scratch, which has allowed me to gain some more understanding of how games work.
+</p>
+<p>
+This game will have a sort of playful, comic-book style feel to it, so I first tried to determine what makes comic books look the way they do.
+</p>
+<p>
+One thing in common with all comic books is that they're, well, printed. This means that they all exhibit a similar visual effect that results from printing: halftoning.
+</p>
+<p>
+Printers have a hard challenge to solve. They must be able to print in full color (or full grayscale) on a white background, using a limited amount of colors of ink. Halftoning is one method that printers implement to print in this manner, and with a little help from <a href="https://en.wikipedia.org/wiki/Halftone">Wikipedia</a>, I learned that the main ideas are as follows:
+</p>
+<ul>
+  <li>The background is white. In order to print darker colors, the printer must use ink to subtract color from what's already there.</li>
+  <li>One such subtractive color model is CMYK, standing for cyan, magenta, yellow, and black.</li>
+  <li>Ink pools up in circles on the paper, and by controlling the amount of ink released by the jet, circles of different radii can be made.</li>
+  <li>When ink of different colors are placed on top of each other, they combine to create different colors.</li>
+  <li>The dots of ink can be placed in a grid, and by rotating each grid by a different amount, the color combinations can be made.</li>
+</ul>
+

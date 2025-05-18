@@ -1,0 +1,60 @@
+@font-face {
+  font-family: "Faune";
+  src:
+    url("./Faune-TextRegular.otf") format("opentype");
+  font-weight: normal; 
+}
+
+@font-face {
+  font-family: "Faune";
+  src:
+    url("./Faune-TextBold.otf") format("opentype");
+  font-weight: bold; 
+}
+
+@font-face {
+  font-family: "Faune Display";
+  src:
+    url("./Faune-DisplayBlack.otf") format("opentype");
+  font-weight: bold; 
+}
+
+body {
+  background-color: #ffeaf9;
+  color: #2c1f33;
+}
+
+spacer {
+  margin-top: 1rem;
+}
+
+container {
+  display: block;
+  padding-left: 36%;
+  padding-right: 36%;
+  margin: 0;
+}
+
+li {
+  font: 1.125rem "Faune", sans-serif;
+  margin-left: 0;
+}
+
+ul {
+  margin-left: 0;
+  padding-left: 1rem;
+}
+
+p {
+  font: 1.125rem "Faune", sans-serif;
+}
+
+h1 {
+  font: 3.5rem "Faune Display", sans-serif;
+  font-weight: bold;
+}
+
+h2 {
+  font: 1.125rem "Faune", sans-serif;
+  color: #7e747c;
+}
