@@ -29,6 +29,7 @@ body {
   background-color: ghostwhite;
   color: #1e1e2f;
   margin: 0;
+  padding: 0;
   margin-bottom: 1.33rem;
 
   --padding: 1rem;
@@ -72,11 +73,16 @@ spacer {
   margin-top: 1rem;
 }
 
+.cnt {
+  padding-top: 1rem;
+}
+
 .title-image {
   display: block;
   width: calc(100% - 2rem);
   height: 16rem;
   margin: 1rem;
+  margin-top: 0rem;
   overflow: clip;
   padding: 0;
   border-radius: 1rem;

@@ -1,5 +1,5 @@
        
-<div id="tosuto">
+<div id="tosuto" class="cnt">
 <img src="./assets/tosuto.01e6cbe2d3827717b1dd.png" class="title-image" style="object-fit: scale-down; background-color: rgb(30, 30, 46)"></img>
 <h1>t&#x0000014d;suto: a scripting language</h1>
 <h2>21 april 2024</h2>
@@ -19,5 +19,5 @@
 <p>Unlike the implementation in Crafting Interpreters, I adapted the vm from my original tree-walk interpreter. This means that my compiler works in stages, instead of the CI implementation which lexed, parsed, and compiled the source file in one step. The compiler works remarkably similarly to the tree-walk interpreter as a result, working recursively down the tree of nodes. However, instead of running the code, it spits out bytecode, an example of which can be seen below.</p>
 <code-box><code-lang>t&#x0000014d;suto bytecode</code-lang><code-body>anonymous:<br/>0000	lit_16	<function &#x0000ff8c;&#x0000ff68;&#x0000ff8e;&#x0000ff9e;><br/>0003	glob_d	&#x0000ff8c;&#x0000ff68;&#x0000ff8e;&#x0000ff9e;<br/>0006	glob_g	&#x0000ff8c;&#x0000ff68;&#x0000ff8e;&#x0000ff9e;<br/>0009	lit_8	9.000000<br/>0011	call	1<br/>0013	pop<br/>0014	ret<br/><br/>anonymous.&#x0000ff8c;&#x0000ff68;&#x0000ff8e;&#x0000ff9e;:<br/>0000	loc_g	1<br/>0003	lit_8	2.000000<br/>0005	lt	<br/>0006	jmpf	4	(6-&gt;13)<br/>0009	pop	<br/>0010	loc_g	1<br/>0013	jmpf	3	(13-&gt;19)<br/>0016	jmp	23	(16-&gt;42)<br/>0019	pop	<br/>0020	glob_g	&#x0000ff8c;&#x0000ff68;&#x0000ff8e;&#x0000ff9e;<br/>0023	loc_g	1<br/>0026	ld_1	<br/>0027	sub	<br/>0028	call	1<br/>0030	glob_g	&#x0000ff8c;&#x0000ff68;&#x0000ff8e;&#x0000ff9e;<br/>0033	loc_g	1<br/>0036	lit_8	2.000000<br/>0038	sub	<br/>0039	call	1<br/>0041	add	<br/>0042	ret	<br/></code-body></code-box>
 <p>That&apos;s as far as I&apos;ve gone with the project so far. I still have ideas for things I want to do with it, though, ranging from trying to write a more complete standard library for it to making an ahead-of-time compiler for it.</p>
-<separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><lnk>Back to top &#x2934;</lnk></p>
+<separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><a href="#intro">Back to top &#x2934;</a></p>
 </div>

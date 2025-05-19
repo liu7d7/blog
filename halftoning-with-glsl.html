@@ -1,5 +1,5 @@
        
-<div id="halftone">
+<div id="halftone" class="cnt">
 <img src="./assets/halftone.8200c71794da01617f63.png" class="title-image"></img>
 <h1>halftoning in glsl</h1>
 <h2>14 april 2024</h2>
@@ -48,5 +48,5 @@ To get the radius of each circle, I computed the average color of four pixels th
 <p>
 This works well on its own, but in order to get a better result, I had to blur the image first so that sharp edges weren&apos;t rendered badly. The unmodified code only samples the four corners of each square, so the average color of all the pixels in the square isn&apos;t taken into account. By blurring the image beforehand, we can save samples and still get the averaged out result when sampling only the corners. The end result is what you see at the top of your screen!
 </p>
-<separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><lnk>Back to top &#x2934;</lnk></p>
+<separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><a href="#intro">Back to top &#x2934;</a></p>
 </div>
