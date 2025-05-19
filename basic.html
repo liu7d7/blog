@@ -2,7 +2,6 @@
 
 #define __code_box(__lang, ...) <code-box><code-lang>__lang</code-lang><code-body>__VA_ARGS__</code-body></code-box>
 #define __code_box_anon(...) <code-box><code-body>__VA_ARGS__</code-body></code-box>
-#define __ending <separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><lnk>Back to top &#x2934;</lnk></p>
 #define __h1(...) <h1>__VA_ARGS__</h1>
 #define __h2(...) <h2>__VA_ARGS__</h2>
 #define __h3(...) <h3>__VA_ARGS__</h3>
@@ -12,3 +11,4 @@
 #define __a(disp, lnk) <a href=#lnk>disp</a>
 #define __timg(__src) <img src=#__src class="title-image"></img>
 #define __oimg(__src) <img src=#__src class="other-image"></img>
+#define __ending <separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/>__a(Back to top &#x2934;, #intro)</p>
