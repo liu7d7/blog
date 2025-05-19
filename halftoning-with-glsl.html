@@ -1,0 +1,52 @@
+       
+<div id="halftone">
+<img src="./assets/halftone.8200c71794da01617f63.png" class="title-image"></img>
+<h1>halftoning in glsl</h1>
+<h2>14 april 2024</h2>
+<p>
+Recently I&apos;ve been working on a game using OpenGL and C. I&apos;ve been having great fun making my own data structures and re-implementing all the math from scratch, which has allowed me to gain some more understanding of how games work.
+</p>
+<p>
+This game will have a sort of playful, comic-book style feel to it, so I first tried to determine what makes comic books look the way they do.
+</p>
+<p>
+One thing in common with all comic books is that they&apos;re, well, printed. This means that they all exhibit a similar visual effect that results from printing: halftoning.
+</p>
+<p>
+Printers have a hard challenge to solve. They must be able to print in full color (or full grayscale) on a white background, using a limited amount of colors of ink. Halftoning is one method that printers implement to print in this manner, and with a little help from <a href="https://en.wikipedia.org/wiki/Halftone">Wikipedia</a>, I learned that the main ideas are as follows:
+</p>
+<ul>
+  <li>The background is white. In order to print darker colors, the printer must use ink to subtract color from what&apos;s already there.</li>
+  <li>One such subtractive color model is CMYK, standing for cyan, magenta, yellow, and black.</li>
+  <li>Ink pools up in circles on the paper, and by controlling the amount of ink released by the jet, circles of different radii can be made.</li>
+  <li>When ink of different colors are placed on top of each other, they combine to create different colors.</li>
+  <li>The dots of ink can be placed in a grid, and by rotating each grid by a different amount, the color combinations are made.</li>
+</ul>
+<p>
+At first, I implemented this in GLSL in two stages. First, I&apos;d convert the three-element RGB image of the render to a four-element CMYK image. Second, I&apos;d use a halftoning shader that could turn the CMYK image into the dots that made up the &apos;printed&apos; image.
+</p>
+<p>
+Let&apos;s go over the code to convert RGB to CMYK. CMYK happens to be symmetrical to RGB, so it&apos;s easy to convert between the two.
+</p>
+<code-box><code-lang>glsl</code-lang><code-body>vec3 color = texture(u_tex, v_uv).rgb;<br/>float r = color.r, g = color.g, b = color.b;<br/>float k = 1 - max(r, max(g, b));<br/>float light = 1 - k;<br/>float c = (light - r) / light;<br/>float m = (light - g) / light;<br/>float y = (light - b) / light;<br/><br/>f_color = vec4(c, m, y, k);<br/></code-body></code-box>
+<p>
+The halftoning shader works as follows: starting with white as the output color, I&apos;d run through each of the four CMYK &apos;screens&apos; of dots, and depending on whether that pixel is part of a dot, subtract the corresponding value from the pixel color.
+</p>
+<p>
+Because CMYK is symmetric to RGB, all one has to do to get the CMYK effect is subtract a color in RGB to get the corresponding CMYK color.
+</p>
+<ul>
+  <li>Cyan: subtract red</li>
+  <li>Magenta: subtract green</li>
+  <li>Yellow: subtract blue</li>
+  <li>Black: subtract white</li>
+</ul>
+<p>
+To get the radius of each circle, I computed the average color of four pixels that surrounded each circle&apos;s center. Then, deciding whether to subtract color from that pixel is easy: if the average color is X% magenta, then fill the circle that covers X% of the square. Of course, it&apos;s impossible to get a circle to fill a square without it going over, so this calculation must be repeated for each neighboring square, too.
+</p>
+<img src="./assets/halftoning expl.d133c2f3231ae0b18469.png" class="other-image"></img>
+<p>
+This works well on its own, but in order to get a better result, I had to blur the image first so that sharp edges weren&apos;t rendered badly. The unmodified code only samples the four corners of each square, so the average color of all the pixels in the square isn&apos;t taken into account. By blurring the image beforehand, we can save samples and still get the averaged out result when sampling only the corners. The end result is what you see at the top of your screen!
+</p>
+<separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><lnk>Back to top &#x2934;</lnk></p>
+</div>

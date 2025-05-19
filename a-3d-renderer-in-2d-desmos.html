@@ -1,0 +1,38 @@
+       
+<div id="3d-renderer-desmos">
+<img src="./assets/desmos.8fae8d39cc3f79809d9d.png" class="title-image"></img>
+<h1>a 3d renderer in 2d desmos</h1>
+<h2>11 may 2024</h2>
+<p>This project started seven months ago, when my precalc teacher told us about his brilliant assignment: make an artistic graph in the Desmos Graphing calculator. I knew I wanted to make something in 3D, but I didn&apos;t get it working in time, so I ended up making this <a href="https://www.desmos.com/calculator/5pgpochvby">monstrosity</a>.</p>
+<p>About a month ago, he had us make another graph, and I knew I wanted to one-up myself. I thought back to that 3D renderer I tried to implement but failed to get working, and tried to fix it up!</p>
+<p><a href="https://www.desmos.com/calculator/gulcaggspf">Here</a> you can see my first attempt at a perspective projection in Desmos.</p>
+<h3>Getting over Desmos&apos; quirks</h3>
+<p>To get to this point, I had to jump over so many hurdles. For one, Desmos doesn&apos;t support lists of lists, which makes doing any operation that requires multiple positions clumsy. The best way I&apos;ve come up with to mitigate this is to store one list for each component of the calculation.</p>
+<p>The lack of lists of lists also makes representing matrices annoying. I settled on flattening out the list and using the formula <code-span>matrix[row * width + column]</code-span> to get the value of the cell.</p>
+<h3>The issue with my first attempt</h3>
+<p>Well, as it turns out, through all my years of graphics programming up to that point, I had never actually learned how the perspective matrix worked! The whole thing was a really humbling experience for me and it got me to read up more on the math, hidden behind wrappers, that I&apos;ve been using so often.</p>
+<p>The missing step was the divide by w, which is integral to getting the perspective distortion that brings objects closer to the center of the screen the farther they are away. The w value is set to the actual z value, whereas the z value is mapped from the interval [near, far] to [0, 1], which is why my previous attempt that divided by z didn&apos;t look correct.</p>
+<h3>Loading 3D models</h3>
+<p>The next hurdle was getting 3D models from Blender into the graphing calculator. For this, I used a separate program in C that used Assimp to parse files and spit out various lists ready to copy and paste into Desmos.</p>
+<p>Alright, I&apos;ve got the data now. Time to render it! Because I used the vertex/index buffer format that OpenGL uses, it was simple to get all the polygons rendered like so.</p>
+<code-box><code-lang>desmodder script</code-lang><code-body>polygon&lpar;<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx0],<br/>    y_vbo[i_vtx0],<br/>    z_vbo[i_vtx0]<br/>  &rpar;,<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx1],<br/>    y_vbo[i_vtx1],<br/>    z_vbo[i_vtx1]<br/>  &rpar;,<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx2],<br/>    y_vbo[i_vtx2],<br/>    z_vbo[i_vtx2]<br/>  &rpar;<br/>&rpar;</code-body></code-box>
+<p>Great! We&apos;ve got a working renderer now.</p>
+<img src="./assets/cube.412ea59a18319c5297af.png" class="other-image"></img>
+<p>Oh.</p>
+<h3>Implementing depth sorting</h3>
+<p>Well, it&apos;s time to implement depth sorting! I&apos;ll describe my &lpar;slow&rpar; first attempt in detail here, and later on I&apos;ll go over optimizations. The main idea is this: if we draw the triangles in order from front to back, then the triangles in the back will be occluded by the triangles in front, like they&apos;re supposed to!</p>
+<p>In order to implement this, I used the centroid of the triangle as its position and projected each of them to use its z position in NDC as its depth.</p>
+<code-box><code-lang>desmodder script</code-lang><code-body>t_centroidX =<br/>  (x_vbo[i_idx0] + x_vbo[i_idx1] + x_vbo[i_idx2]) / 3<br/><br/>t_centroidY =<br/>  (y_vbo[i_idx0] + y_vbo[i_idx1] + y_vbo[i_idx2]) / 3<br/><br/>t_centroidZ =<br/>  (z_vbo[i_idx0] + z_vbo[i_idx1] + z_vbo[i_idx2]) / 3<br/><br/>t_depths = -f_z3(T, t_centroidX, t_centroidY, t_centroidZ)</code-body></code-box>
+<p>Here&apos;s where my first implementation gets a bit dumb. I had to sort the indices for each triangle, but keep the indices together.</p>
+<p>So I did the most straightforward thing!</p>
+<code-box><code-lang>desmodder script</code-lang><code-body>t_keys =<br/>  [t_depths[floor(i / 3) + 1] for i in 0..t_depths.length / 3]<br/><br/>i_sorted = sort(i_ibo, t_keys)</code-body></code-box>
+<p>That actually works, but it&apos;s slow because it allocates so many lists and sorts 3x the data it needs to. Oh well, let&apos;s implement lighting now and optimize later!</p>
+<h3>Phong shading</h3>
+<p>To really cap it all off, I added the phong shading model to the renderer, which is a really fast approximation for proper lighting that really sells the 3D effect.</p>
+<code-box><code-lang>desmodder script</code-lang><code-body>t_spec =<br/>  max&lpar;<br/>    f_dot3v&lpar;<br/>      t_viewDirX / t_viewDirNorm,<br/>      t_viewDirY / t_viewDirNorm,<br/>      t_viewDirZ / t_viewDirNorm,<br/>      l[1] - 2 * x_norm * t_dotNormIncident,<br/>      l[2] - 2 * y_norm * t_dotNormIncident,<br/>      l[3] - 2 * z_norm * t_dotNormIncident<br/>    &rpar;,<br/>    0<br/>  &lpar; ^ 32<br/><br/>t_l =<br/>  sort&lpar;<br/>    0.1 + max&lpar;<br/>      x_norm * -l[1] + y_norm * -l[2] + z_norm * -l[3],<br/>      0<br/>    &rpar; + t_spec * 0.3,<br/>    t_depths<br/>  &rpar;</code-body></code-box>
+<h3>The final result</h3>
+<iframe src="https://www.desmos.com/calculator/hvcxvrd18m?embed" frameborder="0" style="aspect-ratio: 1;"></iframe>
+<h3>Update 18/5/2025</h3>
+<p>This graph is featured in the 2024 Desmos Art Expo! Check it out at <a href="https://desmos.com/art#17">https://desmos.com/art</a>.</p>
+<separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><lnk>Back to top &#x2934;</lnk></p>
+</div>

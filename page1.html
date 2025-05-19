@@ -1,0 +1,165 @@
+       
+<div id="3d-renderer-desmos">
+<img src="./assets/desmos.8fae8d39cc3f79809d9d.png" class="title-image"></img>
+<h1>a 3d renderer in 2d desmos</h1>
+<h2>11 may 2024</h2>
+<p>This project started seven months ago, when my precalc teacher told us about his brilliant assignment: make an artistic graph in the Desmos Graphing calculator. I knew I wanted to make something in 3D, but I didn&apos;t get it working in time, so I ended up making this <a href="https://www.desmos.com/calculator/5pgpochvby">monstrosity</a>.</p>
+<p>About a month ago, he had us make another graph, and I knew I wanted to one-up myself. I thought back to that 3D renderer I tried to implement but failed to get working, and tried to fix it up!</p>
+<p><a href="https://www.desmos.com/calculator/gulcaggspf">Here</a> you can see my first attempt at a perspective projection in Desmos.</p>
+<h3>Getting over Desmos&apos; quirks</h3>
+<p>To get to this point, I had to jump over so many hurdles. For one, Desmos doesn&apos;t support lists of lists, which makes doing any operation that requires multiple positions clumsy. The best way I&apos;ve come up with to mitigate this is to store one list for each component of the calculation.</p>
+<p>The lack of lists of lists also makes representing matrices annoying. I settled on flattening out the list and using the formula <code-span>matrix[row * width + column]</code-span> to get the value of the cell.</p>
+<h3>The issue with my first attempt</h3>
+<p>Well, as it turns out, through all my years of graphics programming up to that point, I had never actually learned how the perspective matrix worked! The whole thing was a really humbling experience for me and it got me to read up more on the math, hidden behind wrappers, that I&apos;ve been using so often.</p>
+<p>The missing step was the divide by w, which is integral to getting the perspective distortion that brings objects closer to the center of the screen the farther they are away. The w value is set to the actual z value, whereas the z value is mapped from the interval [near, far] to [0, 1], which is why my previous attempt that divided by z didn&apos;t look correct.</p>
+<h3>Loading 3D models</h3>
+<p>The next hurdle was getting 3D models from Blender into the graphing calculator. For this, I used a separate program in C that used Assimp to parse files and spit out various lists ready to copy and paste into Desmos.</p>
+<p>Alright, I&apos;ve got the data now. Time to render it! Because I used the vertex/index buffer format that OpenGL uses, it was simple to get all the polygons rendered like so.</p>
+<code-box><code-lang>desmodder script</code-lang><code-body>polygon&lpar;<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx0],<br/>    y_vbo[i_vtx0],<br/>    z_vbo[i_vtx0]<br/>  &rpar;,<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx1],<br/>    y_vbo[i_vtx1],<br/>    z_vbo[i_vtx1]<br/>  &rpar;,<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx2],<br/>    y_vbo[i_vtx2],<br/>    z_vbo[i_vtx2]<br/>  &rpar;<br/>&rpar;</code-body></code-box>
+<p>Great! We&apos;ve got a working renderer now.</p>
+<img src="./assets/cube.412ea59a18319c5297af.png" class="other-image"></img>
+<p>Oh.</p>
+<h3>Implementing depth sorting</h3>
+<p>Well, it&apos;s time to implement depth sorting! I&apos;ll describe my &lpar;slow&rpar; first attempt in detail here, and later on I&apos;ll go over optimizations. The main idea is this: if we draw the triangles in order from front to back, then the triangles in the back will be occluded by the triangles in front, like they&apos;re supposed to!</p>
+<p>In order to implement this, I used the centroid of the triangle as its position and projected each of them to use its z position in NDC as its depth.</p>
+<code-box><code-lang>desmodder script</code-lang><code-body>t_centroidX =<br/>  (x_vbo[i_idx0] + x_vbo[i_idx1] + x_vbo[i_idx2]) / 3<br/><br/>t_centroidY =<br/>  (y_vbo[i_idx0] + y_vbo[i_idx1] + y_vbo[i_idx2]) / 3<br/><br/>t_centroidZ =<br/>  (z_vbo[i_idx0] + z_vbo[i_idx1] + z_vbo[i_idx2]) / 3<br/><br/>t_depths = -f_z3(T, t_centroidX, t_centroidY, t_centroidZ)</code-body></code-box>
+<p>Here&apos;s where my first implementation gets a bit dumb. I had to sort the indices for each triangle, but keep the indices together.</p>
+<p>So I did the most straightforward thing!</p>
+<code-box><code-lang>desmodder script</code-lang><code-body>t_keys =<br/>  [t_depths[floor(i / 3) + 1] for i in 0..t_depths.length / 3]<br/><br/>i_sorted = sort(i_ibo, t_keys)</code-body></code-box>
+<p>That actually works, but it&apos;s slow because it allocates so many lists and sorts 3x the data it needs to. Oh well, let&apos;s implement lighting now and optimize later!</p>
+<h3>Phong shading</h3>
+<p>To really cap it all off, I added the phong shading model to the renderer, which is a really fast approximation for proper lighting that really sells the 3D effect.</p>
+<code-box><code-lang>desmodder script</code-lang><code-body>t_spec =<br/>  max&lpar;<br/>    f_dot3v&lpar;<br/>      t_viewDirX / t_viewDirNorm,<br/>      t_viewDirY / t_viewDirNorm,<br/>      t_viewDirZ / t_viewDirNorm,<br/>      l[1] - 2 * x_norm * t_dotNormIncident,<br/>      l[2] - 2 * y_norm * t_dotNormIncident,<br/>      l[3] - 2 * z_norm * t_dotNormIncident<br/>    &rpar;,<br/>    0<br/>  &lpar; ^ 32<br/><br/>t_l =<br/>  sort&lpar;<br/>    0.1 + max&lpar;<br/>      x_norm * -l[1] + y_norm * -l[2] + z_norm * -l[3],<br/>      0<br/>    &rpar; + t_spec * 0.3,<br/>    t_depths<br/>  &rpar;</code-body></code-box>
+<h3>The final result</h3>
+<iframe src="https://www.desmos.com/calculator/hvcxvrd18m?embed" frameborder="0" style="aspect-ratio: 1;"></iframe>
+<h3>Update 18/5/2025</h3>
+<p>This graph is featured in the 2024 Desmos Art Expo! Check it out at <a href="https://desmos.com/art#17">https://desmos.com/art</a>.</p>
+<separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><lnk>Back to top &#x2934;</lnk></p>
+</div>
+<div id="wip">
+<img src="./assets/hana.76f260979c4f7f1a7010.png" class="title-image"></img>
+<h1>wip: my custom game engine</h1>
+<h2>5 may 2024</h2>
+<p>A short note:</p>
+<p style="padding-left: 1rem; padding-right: 1rem">You might think I haven&apos;t given this engine a name yet. But you&apos;d be wrong! The name is wip, and that&apos;s for good reason. I&apos;ve started projects many times because I came up with a cool name for them. But as soon as I start a project like that, the project&apos;s doomed, because I&apos;m hyped for the cool name, not for what the project actually is. When the novelty of the name wears off, so does my motivation to finish the project, and by giving it a dumb name like work in progress, I think I&apos;m finally excited about the project for the project, and not for the name. Also, sorry in advance for the yap :p</p>
+<h3>Which language?</h3>
+<p>I&apos;ll start with the language I chose for this project, because I&apos;m 1&rpar; really enjoying it and 2&rpar; kind of unconventional for these types of things.</p>
+<p>I&apos;m using C. Why C? Before this project, I programmed mainly in C++, and before that, I used managed languages like Java and C#. Though I enjoyed programming in those languages at the time, I realized that I was prone to writing unnecessarily complex code when given the resources to do so.</p>
+<p>For example, I&apos;d use huge amounts of C++ templating, even though I wasn&apos;t going to be releasing the engine to the public or anything, so that bit shouldn&apos;t&apos;ve even been there in the first place. Or I&apos;d develop some hugely complex state management system, which only served to muddle the waters between me and the finished feature.</p>
+<p>In the languages I used to use, it was like the language features served to push me in the direction of unnecessary complexity, whereas in C, I feel like complexity is something I have to actively seek out (which I&apos;m trying my best not to do).</p>
+<p>Before I get farther into bikeshedding territory, let&apos;s move on to the parts of the engine I&apos;m really proud of!</p>
+<h3>The physics engine</h3>
+<p>I&apos;m super proud of this. The biggest hurdle for me is always getting some sort of collision detection in place, and the daunting task has killed many a short project of mine. Though the engine is currently not physically based in any way, it does work to keep the player above ground and outside of trees. I&apos;ve had to optimize it to get it working at real time, but it&apos;s nowhere near being fully efficient.</p>
+<p>I wanted it to support three different shapes: triangle meshes, capsules, and spheres. It was relatively easy to pull code to handle collisions between triangles and spheres, and because capsules are like a special case of spheres, it was relatively easy to adapt the code to work with them, too.</p>
+<p>Great. I now have a working physics engine, right? <b>No.</b></p>
+<p>Sure, the collisions worked, but that&apos;s a moot point when the game now runs at five frames per second, so it&apos;s time to optimize. In the engine&apos;s current state, the world is partitioned into regions that are the same size as a chunk. Next, each of the physics objects in view are placed in the regions that their bounding boxes intersect with, which is the first step to reducing expensive compares when doing collision resolution. Next, objects are checked in pairs in each region, but pairs are skipped when their bounding boxes don&apos;t intersect, which further increases performance.</p>
+<p>There&apos;s still things to improve and learn, though. I still have absolutely no idea what a BVH tree is, or how it can improve performance, and after watching Mike Acton&apos;s <a href="https://www.youtube.com/watch?v=rX0ItVEVjHc">talk</a> on Data Oriented Design, I realized my design is inherently bad for cache coherency.</p>
+<h3>The renderer</h3>
+<p>The renderer includes stuff I&apos;ve learned previously, such as chunking, instanced rendering, and dithering, but also includes lots of new optimizations I had to figure out in order for it to get running well.</p>
+<p>At first, I made the simplest thing that worked: no culling, one draw call per object, and huge amounts of wasted OpenGL calls. To no one&apos;s surprise, the renderer struggled to reach 60 frames per second even in simple scenes, such as a flat landscape with some spheres scattered around it.</p>
+<p>It was fine for the time being, but as I added dynamic shadows, high-poly trees, and more detailed terrain, the program started to chug. I saw the milliseconds per frame slowly climb as I added features, first from 18 to 25 when I added shadows, and then to nearly 120 when I added in my precious trees.</p>
+<p>Now, old me would have probably given up here, but hey, this project is a work in progress. There&apos;s always room for improvement. First, I changed the renderer to use instanced rendering. I thought there would be a huge improvement in frame times, but there really wasn&apos;t. I kept the development, though, because one draw call seemed better than many. I almost gave up here because I thought I didn&apos;t know how to speed it up in any way.</p>
+<h3>Frustum culling &lpar;120 -&gt; 40 ms per frame&rpar;</h3>
+<p>Okay, so instanced rendering didn&apos;t help me out. But what if I just found ways to draw less stuff? First, I tried a naive solution to frustum culling. Using <code-span>atan2</code-span> on the relative position of each game object to the player, I drew each object only if the angle found was inside the player&apos;s FOV. This worked to some extent, but because it didn&apos;t account for perspective distortion and only compared the centers of each object, there were many cases where trees and other objects would pop in and out of view.</p>
+<p>Alright, so blindly comparing the relative angle doesn&apos;t really work. However, I found a new naive solution: simply project each of the corners of the object&apos;s bounding box, and then see whether it gets culled. If any of the corners aren&apos;t culled, then the object is in view! This worked a lot better than the last solution because it was actually rooted in some sort of reasoning, but it missed some cases such as when the bounding box was partially in view but whose vertices are all clipped.</p>
+<p>As always, it&apos;s LearnOpenGL to the rescue. There&apos;s a great article on it about frustum culling, and after implementing the solution found on the website, I was able to get analytical frustum culling in place, which made the artifacts go away. However, some trees that are out of view still cast shadows that end up in view, so the shadow pass uses a frustum that starts farther back from the eye of the player, thus increasing the number of trees it renders on the sides of the frustum.</p>
+<h3>Levels of detail &lpar;40 -&gt; 25 ms per frame&rpar;</h3>
+<p>Okay, so I&apos;m drawing less trees now. However, after some inspection, I found that I was still trying to draw fifteen million triangles a frame! To further reduce the amount of triangles drawn, I decided to implement levels of detail for my trees.</p>
+<p>The first step is to make new, less detailed models for trees that are far away. The goal here is to decrease the amount of triangles drawn for trees that are far away, because the player won&apos;t even be able to see the extra detail. I created new, lower poly models for each tree, which I render in place of the full detail model when the trees are more than forty-five units away.</p>
+<p>Here&apos;s a comparison between the draw calls I was making before and the draw calls I&apos;m making now. The call for 201000 vertices is for a small bush, by the way.</p>
+<div style="margin-left: var(--padding); margin-right: var(--padding); width: calc(100% - 2 * var(--padding)); display: grid; gap: 1rem; grid-template-columns: 1fr 1fr;">
+  <div>
+    <h2 style="width: max-content; margin-left: 0; margin-right: 0;">Without LOD:</h2>
+    <img src="./assets/wip-pre-lod.png" style="max-width: 100%; border-radius: 1rem; box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color)"></img>
+  </div>
+  <div>
+    <h2 style="width: max-content; margin-left: 0; margin-right: 0;">With LOD:</h2>
+    <img src="./assets/wip-post-lod.png" style="max-width: 100%; border-radius: 1rem; box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color)"></img>
+  </div>
+</div>
+<h3>One last thing... &lpar;25 -&gt; 11 ms per frame&rpar;</h3>
+<p>After the previous two optimizations, I really thought I had nowhere left to go, and thought I&apos;d just have to start getting rid of leaves.</p>
+<p>But one day, I was scrolling in the OpenTK Discord server, and I saw this conversation:</p>
+<code-box><code-body>BoyBaykiller: Nice!<br/>BoyBaykiller: Are you on an intel gpu?<br/>caps lock: nvidia<br/>caps lock: rtx 2060<br/>BoyBaykiller: ok, I know this seems stupid but can you make sure its actually using that with Console.WriteLine&lpar;GL.GetString&lpar;StringName.Renderer&rpar;&rpar;;<br/></code-body></code-box>
+<p>That prompted me to check whether OpenGL was actually rendering on my RX 6500M, because my laptop also has integrated graphics in it.</p>
+<p>It, uh, wasn&apos;t.</p>
+<img src="./assets/task_man.2dbf1a45a10843a3fa95.png" class="other-image"></img>
+<p>To fix this, I added two lines of code that force AMD and nVidia drivers to use their proper GPUs.</p>
+<code-box><code-lang>C</code-lang><code-body>__attribute__((dllexport)) int AmdPowerXpressRequestHighPerformance = 1;<br/>__attribute__((dllexport)) DWORD NvOptimusEnablement = 0x00000001;</code-body></code-box>
+<h3>The final result</h3>
+<img src="./assets/hana_final.38625c2ee2f2747b0b15.jpg" class="other-image"></img>
+<separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><lnk>Back to top &#x2934;</lnk></p>
+</div>
+<div id="tosuto">
+<img src="./assets/tosuto.01e6cbe2d3827717b1dd.png" class="title-image" style="object-fit: scale-down; background-color: rgb(30, 30, 46)"></img>
+<h1>t&#x0000014d;suto: a scripting language</h1>
+<h2>21 april 2024</h2>
+<p>I&apos;ve recently been wanting to get back into making programming languages again, so I&apos;ve started up this project to fulfill that desire. Though I didn&apos;t have a goal for what the project would be, I knew that I wanted it to have a really minimal syntax that, given it was my first language, made at least some sense with good amounts of continuity.</p>
+<p>I started off by playing around in my code editor and seeing what looked okay. Inspired by Jai and Odin, I made my function declaration syntax super simple, with just a single colon between the name and the arguments and body. To make the language more concise, I made boolean operators a single keystroke because they&apos;re used much more often (in my daily use) than bitwise operators are. This also makes the ternary operator redundant, as one can simply use ands and ors to build a substitute.</p>
+<p>Let&apos;s go over some of the features of the language!</p>
+<p>Variable declarations, reassignments, and accesses are like most walrus operator languages. Semicolons are not required at the end of lines.</p>
+<code-box><code-lang>t&#x0000014d;suto</code-lang><code-body>a := 3<br/>a = 4<br/></code-body></code-box>
+<p>Function declarations are as simple as typing out the name and args. The body can be a single statement with an arrow, or a block with curlies. The last statement is implicitly returned, but the ret keyword can be used to return early.</p>
+<code-box><code-lang>t&#x0000014d;suto</code-lang><code-body>add : a b -&gt; a + b<br/>multiply : a b {<br/>  a * b<br/>}<br/></code-body></code-box>
+<p>Because I wanted to try experimenting with different languages, identifiers follow the rules specified in Microsoft&apos;s MSVC extensions.</p>
+<code-box><code-lang>t&#x0000014d;suto</code-lang><code-body>&#x0000ff84;&#x0000ff70;&#x0000ff7d;&#x0000ff84; := "toast"<br/>toast := "toast"<br/>pain_grill&#x000000e9; := "toast"<br/></code-body></code-box>
+<p>Objects are very minimal and are similar to Lua&apos;s tables, where calling a member function with a colon will pass the object as the first parameter. This first parameter can be called anything, which allows greater flexibility when making constructors or other special functions.</p>
+<code-box><code-lang>t&#x0000014d;suto</code-lang><code-body>vec2 := [|<br/>  new : base x y -&gt; base with [|x = x, y = y|]<br/>  dot : my other -&gt; my.x * other.x + my.y * other.y<br/>  // ... other stuff<br/>|]<br/><br/>vec := vec2:new(1, 2)<br/>test_dot = vec:dot(vec2:new(3, 3))<br/></code-body></code-box>
+<p>Note the use of the <code-span>with</code-span> keyword in the previous example. This allows easy construction of objects, using the existing object as a template for the constructed object, and a second object that is appended to the first. Though this is nowhere near the most efficient way to do things, it&apos;s definitely one of the easiest to implement!</p>
+<p>The language uses a custom bytecode and vm that I implemented based on the one in Crafting Interpreters, which I optimized heavily. During this optimization, I rewrote the vm to move away from the C++ class based implementation that I previously used and returned to the land of C, which, in my opinion, turns out to be much nicer and easier to write bytecode interpreters in, anyway.</p>
+<p>Unlike the implementation in Crafting Interpreters, I adapted the vm from my original tree-walk interpreter. This means that my compiler works in stages, instead of the CI implementation which lexed, parsed, and compiled the source file in one step. The compiler works remarkably similarly to the tree-walk interpreter as a result, working recursively down the tree of nodes. However, instead of running the code, it spits out bytecode, an example of which can be seen below.</p>
+<code-box><code-lang>t&#x0000014d;suto bytecode</code-lang><code-body>anonymous:<br/>0000	lit_16	<function &#x0000ff8c;&#x0000ff68;&#x0000ff8e;&#x0000ff9e;><br/>0003	glob_d	&#x0000ff8c;&#x0000ff68;&#x0000ff8e;&#x0000ff9e;<br/>0006	glob_g	&#x0000ff8c;&#x0000ff68;&#x0000ff8e;&#x0000ff9e;<br/>0009	lit_8	9.000000<br/>0011	call	1<br/>0013	pop<br/>0014	ret<br/><br/>anonymous.&#x0000ff8c;&#x0000ff68;&#x0000ff8e;&#x0000ff9e;:<br/>0000	loc_g	1<br/>0003	lit_8	2.000000<br/>0005	lt	<br/>0006	jmpf	4	(6-&gt;13)<br/>0009	pop	<br/>0010	loc_g	1<br/>0013	jmpf	3	(13-&gt;19)<br/>0016	jmp	23	(16-&gt;42)<br/>0019	pop	<br/>0020	glob_g	&#x0000ff8c;&#x0000ff68;&#x0000ff8e;&#x0000ff9e;<br/>0023	loc_g	1<br/>0026	ld_1	<br/>0027	sub	<br/>0028	call	1<br/>0030	glob_g	&#x0000ff8c;&#x0000ff68;&#x0000ff8e;&#x0000ff9e;<br/>0033	loc_g	1<br/>0036	lit_8	2.000000<br/>0038	sub	<br/>0039	call	1<br/>0041	add	<br/>0042	ret	<br/></code-body></code-box>
+<p>That&apos;s as far as I&apos;ve gone with the project so far. I still have ideas for things I want to do with it, though, ranging from trying to write a more complete standard library for it to making an ahead-of-time compiler for it.</p>
+<separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><lnk>Back to top &#x2934;</lnk></p>
+</div>
+<div id="halftone">
+<img src="./assets/halftone.8200c71794da01617f63.png" class="title-image"></img>
+<h1>halftoning in glsl</h1>
+<h2>14 april 2024</h2>
+<p>
+Recently I&apos;ve been working on a game using OpenGL and C. I&apos;ve been having great fun making my own data structures and re-implementing all the math from scratch, which has allowed me to gain some more understanding of how games work.
+</p>
+<p>
+This game will have a sort of playful, comic-book style feel to it, so I first tried to determine what makes comic books look the way they do.
+</p>
+<p>
+One thing in common with all comic books is that they&apos;re, well, printed. This means that they all exhibit a similar visual effect that results from printing: halftoning.
+</p>
+<p>
+Printers have a hard challenge to solve. They must be able to print in full color (or full grayscale) on a white background, using a limited amount of colors of ink. Halftoning is one method that printers implement to print in this manner, and with a little help from <a href="https://en.wikipedia.org/wiki/Halftone">Wikipedia</a>, I learned that the main ideas are as follows:
+</p>
+<ul>
+  <li>The background is white. In order to print darker colors, the printer must use ink to subtract color from what&apos;s already there.</li>
+  <li>One such subtractive color model is CMYK, standing for cyan, magenta, yellow, and black.</li>
+  <li>Ink pools up in circles on the paper, and by controlling the amount of ink released by the jet, circles of different radii can be made.</li>
+  <li>When ink of different colors are placed on top of each other, they combine to create different colors.</li>
+  <li>The dots of ink can be placed in a grid, and by rotating each grid by a different amount, the color combinations are made.</li>
+</ul>
+<p>
+At first, I implemented this in GLSL in two stages. First, I&apos;d convert the three-element RGB image of the render to a four-element CMYK image. Second, I&apos;d use a halftoning shader that could turn the CMYK image into the dots that made up the &apos;printed&apos; image.
+</p>
+<p>
+Let&apos;s go over the code to convert RGB to CMYK. CMYK happens to be symmetrical to RGB, so it&apos;s easy to convert between the two.
+</p>
+<code-box><code-lang>glsl</code-lang><code-body>vec3 color = texture(u_tex, v_uv).rgb;<br/>float r = color.r, g = color.g, b = color.b;<br/>float k = 1 - max(r, max(g, b));<br/>float light = 1 - k;<br/>float c = (light - r) / light;<br/>float m = (light - g) / light;<br/>float y = (light - b) / light;<br/><br/>f_color = vec4(c, m, y, k);<br/></code-body></code-box>
+<p>
+The halftoning shader works as follows: starting with white as the output color, I&apos;d run through each of the four CMYK &apos;screens&apos; of dots, and depending on whether that pixel is part of a dot, subtract the corresponding value from the pixel color.
+</p>
+<p>
+Because CMYK is symmetric to RGB, all one has to do to get the CMYK effect is subtract a color in RGB to get the corresponding CMYK color.
+</p>
+<ul>
+  <li>Cyan: subtract red</li>
+  <li>Magenta: subtract green</li>
+  <li>Yellow: subtract blue</li>
+  <li>Black: subtract white</li>
+</ul>
+<p>
+To get the radius of each circle, I computed the average color of four pixels that surrounded each circle&apos;s center. Then, deciding whether to subtract color from that pixel is easy: if the average color is X% magenta, then fill the circle that covers X% of the square. Of course, it&apos;s impossible to get a circle to fill a square without it going over, so this calculation must be repeated for each neighboring square, too.
+</p>
+<img src="./assets/halftoning expl.d133c2f3231ae0b18469.png" class="other-image"></img>
+<p>
+This works well on its own, but in order to get a better result, I had to blur the image first so that sharp edges weren&apos;t rendered badly. The unmodified code only samples the four corners of each square, so the average color of all the pixels in the square isn&apos;t taken into account. By blurring the image beforehand, we can save samples and still get the averaged out result when sampling only the corners. The end result is what you see at the top of your screen!
+</p>
+<separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><lnk>Back to top &#x2934;</lnk></p>
+</div>
