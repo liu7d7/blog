@@ -1,0 +1,66 @@
+#include "basic.html"
+
+<div id="wip">
+__timg(./assets/hana.76f260979c4f7f1a7010.png)
+__h1(wip: my custom game engine)
+__h2(5 may 2024)
+__p(A short note:)
+__aside(You might think I haven&apos;t given this engine a name yet. But you&apos;d be wrong! The name is wip, and that&apos;s for good reason. I&apos;ve started projects many times because I came up with a cool name for them. But as soon as I start a project like that, the project&apos;s doomed, because I&apos;m hyped for the cool name, not for what the project actually is. When the novelty of the name wears off, so does my motivation to finish the project, and by giving it a dumb name like work in progress, I think I&apos;m finally excited about the project for the project, and not for the name. Also, sorry in advance for the yap :p)
+__h3(Which language?)
+__p(I&apos;ll start with the language I chose for this project, because I&apos;m 1&rpar; really enjoying it and 2&rpar; kind of unconventional for these types of things.)
+__p(I&apos;m using C. Why C? Before this project, I programmed mainly in C++, and before that, I used managed languages like Java and C#. Though I enjoyed programming in those languages at the time, I realized that I was prone to writing unnecessarily complex code when given the resources to do so.)
+__p(For example, I&apos;d use huge amounts of C++ templating, even though I wasn&apos;t going to be releasing the engine to the public or anything, so that bit shouldn&apos;t&apos;ve even been there in the first place. Or I&apos;d develop some hugely complex state management system, which only served to muddle the waters between me and the finished feature.)
+__p(In the languages I used to use, it was like the language features served to push me in the direction of unnecessary complexity, whereas in C, I feel like complexity is something I have to actively seek out (which I&apos;m trying my best not to do).)
+__p(Before I get farther into bikeshedding territory, let&apos;s move on to the parts of the engine I&apos;m really proud of!)
+__h3(The physics engine)
+__p(I&apos;m super proud of this. The biggest hurdle for me is always getting some sort of collision detection in place, and the daunting task has killed many a short project of mine. Though the engine is currently not physically based in any way, it does work to keep the player above ground and outside of trees. I&apos;ve had to optimize it to get it working at real time, but it&apos;s nowhere near being fully efficient.)
+__p(I wanted it to support three different shapes: triangle meshes, capsules, and spheres. It was relatively easy to pull code to handle collisions between triangles and spheres, and because capsules are like a special case of spheres, it was relatively easy to adapt the code to work with them, too.)
+__p(Great. I now have a working physics engine, right? <b>No.</b>)
+__p(Sure, the collisions worked, but that&apos;s a moot point when the game now runs at five frames per second, so it&apos;s time to optimize. In the engine&apos;s current state, the world is partitioned into regions that are the same size as a chunk. Next, each of the physics objects in view are placed in the regions that their bounding boxes intersect with, which is the first step to reducing expensive compares when doing collision resolution. Next, objects are checked in pairs in each region, but pairs are skipped when their bounding boxes don&apos;t intersect, which further increases performance.)
+__p(There&apos;s still things to improve and learn, though. I still have absolutely no idea what a BVH tree is, or how it can improve performance, and after watching Mike Acton&apos;s __a(talk, https:\/\/www.youtube.com\/watch?v=rX0ItVEVjHc) on Data Oriented Design, I realized my design is inherently bad for cache coherency.)
+__h3(The renderer)
+__p(The renderer includes stuff I&apos;ve learned previously, such as chunking, instanced rendering, and dithering, but also includes lots of new optimizations I had to figure out in order for it to get running well.)
+__p(At first, I made the simplest thing that worked: no culling, one draw call per object, and huge amounts of wasted OpenGL calls. To no one&apos;s surprise, the renderer struggled to reach 60 frames per second even in simple scenes, such as a flat landscape with some spheres scattered around it.)
+__p(It was fine for the time being, but as I added dynamic shadows, high-poly trees, and more detailed terrain, the program started to chug. I saw the milliseconds per frame slowly climb as I added features, first from 18 to 25 when I added shadows, and then to nearly 120 when I added in my precious trees.)
+__p(Now, old me would have probably given up here, but hey, this project is a work in progress. There&apos;s always room for improvement. First, I changed the renderer to use instanced rendering. I thought there would be a huge improvement in frame times, but there really wasn&apos;t. I kept the development, though, because one draw call seemed better than many. I almost gave up here because I thought I didn&apos;t know how to speed it up in any way.)
+__h3(Frustum culling &lpar;120 -&gt; 40 ms per frame&rpar;)
+__p(Okay, so instanced rendering didn&apos;t help me out. But what if I just found ways to draw less stuff? First, I tried a naive solution to frustum culling. Using <code-span>atan2</code-span> on the relative position of each game object to the player, I drew each object only if the angle found was inside the player&apos;s FOV. This worked to some extent, but because it didn&apos;t account for perspective distortion and only compared the centers of each object, there were many cases where trees and other objects would pop in and out of view.)
+__p(Alright, so blindly comparing the relative angle doesn&apos;t really work. However, I found a new naive solution: simply project each of the corners of the object&apos;s bounding box, and then see whether it gets culled. If any of the corners aren&apos;t culled, then the object is in view! This worked a lot better than the last solution because it was actually rooted in some sort of reasoning, but it missed some cases such as when the bounding box was partially in view but whose vertices are all clipped.)
+__p(As always, it&apos;s LearnOpenGL to the rescue. There&apos;s a great article on it about frustum culling, and after implementing the solution found on the website, I was able to get analytical frustum culling in place, which made the artifacts go away. However, some trees that are out of view still cast shadows that end up in view, so the shadow pass uses a frustum that starts farther back from the eye of the player, thus increasing the number of trees it renders on the sides of the frustum.)
+__h3(Levels of detail &lpar;40 -&gt; 25 ms per frame&rpar;)
+__p(Okay, so I&apos;m drawing less trees now. However, after some inspection, I found that I was still trying to draw fifteen million triangles a frame! To further reduce the amount of triangles drawn, I decided to implement levels of detail for my trees.)
+__p(The first step is to make new, less detailed models for trees that are far away. The goal here is to decrease the amount of triangles drawn for trees that are far away, because the player won&apos;t even be able to see the extra detail. I created new, lower poly models for each tree, which I render in place of the full detail model when the trees are more than forty-five units away.)
+__p(Here&apos;s a comparison between the draw calls I was making before and the draw calls I&apos;m making now. The call for 201000 vertices is for a small bush, by the way.)
+<div style="margin-left: var(--padding); margin-right: var(--padding); width: calc(100% - 2 * var(--padding)); display: grid; gap: 1rem; grid-template-columns: 1fr 1fr;">
+  <div>
+    <h2 style="width: max-content; margin-left: 0; margin-right: 0;">Without LOD:</h2>
+    <img src="./assets/wip-pre-lod.png" style="max-width: 100%; border-radius: 1rem; box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color)"></img>
+  </div>
+  <div>
+    <h2 style="width: max-content; margin-left: 0; margin-right: 0;">With LOD:</h2>
+    <img src="./assets/wip-post-lod.png" style="max-width: 100%; border-radius: 1rem; box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color)"></img>
+  </div>
+</div>
+__h3(One last thing... &lpar;25 -&gt; 11 ms per frame&rpar;)
+__p(After the previous two optimizations, I really thought I had nowhere left to go, and thought I&apos;d just have to start getting rid of leaves.)
+__p(But one day, I was scrolling in the OpenTK Discord server, and I saw this conversation:)
+__code_box_anon(
+  BoyBaykiller: Nice!<br/>
+BoyBaykiller: Are you on an intel gpu?<br/>
+caps lock: nvidia<br/>
+caps lock: rtx 2060<br/>
+BoyBaykiller: ok, I know this seems stupid but can you make sure its actually using that with Console.WriteLine&lpar;GL.GetString&lpar;StringName.Renderer&rpar;&rpar;;<br/>
+)
+__p(That prompted me to check whether OpenGL was actually rendering on my RX 6500M, because my laptop also has integrated graphics in it.)
+__p(It, uh, wasn&apos;t.)
+__oimg(./assets/task_man.2dbf1a45a10843a3fa95.png)
+__p(To fix this, I added two lines of code that force AMD and nVidia drivers to use their proper GPUs.)
+__code_box(
+  C,
+__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;<br/>
+__declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+)
+__h3(The final result)
+__oimg(./assets/hana_final.38625c2ee2f2747b0b15.jpg)
+__ending
+</div>

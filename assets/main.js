@@ -4,3 +4,7 @@ const months = "january february march april may june july august september octo
   const date = new Date();
   document.getElementById("date").innerHTML = `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
+
+function gotoArticle(id) {
+  window.location.assign("./#id")
+}

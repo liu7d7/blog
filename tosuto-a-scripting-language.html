@@ -1,0 +1,82 @@
+#include "basic.html"
+
+<div id="tosuto">
+<img src="./assets/tosuto.01e6cbe2d3827717b1dd.png" class="title-image" style="object-fit: scale-down; background-color: rgb(30, 30, 46)"></img>
+<h1>tōsuto: a scripting language</h1>
+<h2>21 april 2024</h2>
+<p>I&apos;ve recently been wanting to get back into making programming languages again, so I&apos;ve started up this project to fulfill that desire. Though I didn&apos;t have a goal for what the project would be, I knew that I wanted it to have a really minimal syntax that, given it was my first language, made at least some sense with good amounts of continuity.</p>
+<p>I started off by playing around in my code editor and seeing what looked okay. Inspired by Jai and Odin, I made my function declaration syntax super simple, with just a single colon between the name and the arguments and body. To make the language more concise, I made boolean operators a single keystroke because they&apos;re used much more often (in my daily use) than bitwise operators are. This also makes the ternary operator redundant, as one can simply use ands and ors to build a substitute.</p>
+<p>Let&apos;s go over some of the features of the language!</p>
+<p>Variable declarations, reassignments, and accesses are like most walrus operator languages. Semicolons are not required at the end of lines.</p>
+__code_box(
+  tōsuto,
+a := 3<br/>
+a = 4<br/>
+)
+<p>Function declarations are as simple as typing out the name and args. The body can be a single statement with an arrow, or a block with curlies. The last statement is implicitly returned, but the ret keyword can be used to return early.</p>
+__code_box(
+  tōsuto,
+add : a b -&gt; a + b<br/>
+multiply : a b {<br/>
+\ta * b<br/>
+}<br/>
+)
+<p>Because I wanted to try experimenting with different languages, identifiers follow the rules specified in Microsoft&apos;s MSVC extensions.</p>
+__code_box(
+  tōsuto,
+ﾄｰｽﾄ := "toast"<br/>
+toast := "toast"<br/>
+pain_grillé := "toast"<br/>
+)
+<p>Objects are very minimal and are similar to Lua&apos;s tables, where calling a member function with a colon will pass the object as the first parameter. This first parameter can be called anything, which allows greater flexibility when making constructors or other special functions.</p>
+__code_box(
+  tōsuto,
+vec2 := [|<br/>
+\tnew : base x y -&gt; base with [|x = x, y = y|]<br/>
+\tdot : my other -&gt; my.x * other.x + my.y * other.y<br/>
+\t\/\/ ... other stuff<br/>
+|]<br/>
+<br/>
+vec := vec2:new(1, 2)<br/>
+test_dot = vec:dot(vec2:new(3, 3))<br/>
+)
+<p>Note the use of the <code-span>with</code-span> keyword in the previous example. This allows easy construction of objects, using the existing object as a template for the constructed object, and a second object that is appended to the first. Though this is nowhere near the most efficient way to do things, it&apos;s definitely one of the easiest to implement!</p>
+<p>The language uses a custom bytecode and vm that I implemented based on the one in Crafting Interpreters, which I optimized heavily. During this optimization, I rewrote the vm to move away from the C++ class based implementation that I previously used and returned to the land of C, which, in my opinion, turns out to be much nicer and easier to write bytecode interpreters in, anyway.</p>
+<p>Unlike the implementation in Crafting Interpreters, I adapted the vm from my original tree-walk interpreter. This means that my compiler works in stages, instead of the CI implementation which lexed, parsed, and compiled the source file in one step. The compiler works remarkably similarly to the tree-walk interpreter as a result, working recursively down the tree of nodes. However, instead of running the code, it spits out bytecode, an example of which can be seen below.</p>
+__code_box(
+  tōsuto bytecode,
+anonymous:<br/>
+0000\Tlit_16\T<function ﾌｨﾎﾞ><br/>
+0003\Tglob_d\Tﾌｨﾎﾞ<br/>
+0006\Tglob_g\Tﾌｨﾎﾞ<br/>
+0009\Tlit_8\T9.000000<br/>
+0011\Tcall\T1<br/>
+0013\Tpop<br/>
+0014\Tret<br/>
+<br/>
+anonymous.ﾌｨﾎﾞ:<br/>
+0000\Tloc_g\T1<br/>
+0003\Tlit_8\T2.000000<br/>
+0005\Tlt\T<br/>
+0006\Tjmpf\T4\T(6-&gt;13)<br/>
+0009\Tpop\T<br/>
+0010\Tloc_g\T1<br/>
+0013\Tjmpf\T3\T(13-&gt;19)<br/>
+0016\Tjmp\T23\T(16-&gt;42)<br/>
+0019\Tpop\T<br/>
+0020\Tglob_g\Tﾌｨﾎﾞ<br/>
+0023\Tloc_g\T1<br/>
+0026\Tld_1\T<br/>
+0027\Tsub\T<br/>
+0028\Tcall\T1<br/>
+0030\Tglob_g\Tﾌｨﾎﾞ<br/>
+0033\Tloc_g\T1<br/>
+0036\Tlit_8\T2.000000<br/>
+0038\Tsub\T<br/>
+0039\Tcall\T1<br/>
+0041\Tadd\T<br/>
+0042\Tret\T<br/>
+)
+<p>That&apos;s as far as I&apos;ve gone with the project so far. I still have ideas for things I want to do with it, though, ranging from trying to write a more complete standard library for it to making an ahead-of-time compiler for it.</p>
+__ending
+</div>
