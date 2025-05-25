@@ -52,6 +52,37 @@ Music:
 </ul>
 </div>
     <div id="body">
+<div id="truchet" class="cnt">
+<img src="./assets/firefox_4AGEoABwFr.jpg" class="title-image"></img>
+<h1>shadertoy 1: truchet</h1>
+<h2>18 may 2025</h2>
+<p>Wow, it&apos;s been more than a year since my last blog post. I suppose that&apos;s fitting, though, since this year&apos;s been a doozy.</p>
+<p>Well, I have some more time now, and I&apos;ve got so much energy to try some new stuff. I&apos;ve been inspired especially by some graphics programming demos that were posted in our CS Club&apos;s show-and-tell channel, as well as Revision Demoparty&apos;s Shader Showdown. I still remember the first time I saw live shader coding; I was genuinely amazed at how much they were able to pull off in just 25 minutes, as well as the level of polish they were able to deliver.</p>
+<p>Revision 2025 just happened, and Shader Showdown was once again pretty awesome. While the main event was the addition of compute shaders, one part of Flopine&apos;s submission really caught my eye.</p>
+<img src="./assets/chrome_RuryzLBmsZ.png" class="other-image"></img>
+<p>It&apos;s such an elegant pattern, and I wanted to go through my own process of making it in the most optimized way. In the end, I learned things I never knew about GLSL and discovered the really welcoming community on Shadertoy.</p>
+<h3>My first attempt</h3>
+<iframe frameborder="0" src="https://www.shadertoy.com/embed/tcc3z2?gui=true&t=10&paused=true&muted=false" allowfullscreen style="aspect-ratio: 1"></iframe>
+<p>The general idea is as follows:</p>
+<ul>
+  <li>For each pixel, find which cell it&apos;s in; each cell is <code-span>w</code-span> wide.</li>
+  <li>Find the hash at the bottom left of the cell mod 4.</li>
+  <li>Index into an array that decides the two points about which we&apos;re making circles</li>
+  <li>Draw the circles with some nice glow</li>
+  <li>Repeat this for different scales with some nice blending!</li>
+</ul>
+<code-box><code-lang>glsl</code-lang><code-body>vec4<br/>truchet(vec2 p, float r, float w)<br/>{<br/>  float hr = r / 2.;<br/>  float hw = w / 2.;<br/><br/>  vec2 b = floor(p / r) * r;<br/>  vec2 c = b + vec2(hr);<br/>  uint h = hash(uvec2(abs(c * 100.))) % 4u;<br/><br/>  vec2 a[] = vec2[](<br/>    b + vec2(r, 0),<br/>    b + vec2(r),<br/>    b + vec2(0, r),<br/>    b,<br/>    b + vec2(0, r),<br/>    b,<br/>    b + vec2(r, 0),<br/>    b + vec2(r)<br/>  );<br/><br/>  float d = distance(p, a[h]);<br/>  if (abs(d - hr) &lt; hw) {<br/>    return vec4(1.);<br/>  }<br/><br/>  if (abs(d - hr) &lt; w * 1.5) {<br/>    return vec4(color(iTime * 0.5), (1. - (abs(d - hr) - hw) / w) * 0.5);<br/>  }<br/><br/>  d = distance(p, a[h + 4u]);<br/>  if (abs(d - hr) &lt; hw) {<br/>    return vec4(1.);<br/>  }<br/><br/>  if (abs(d - hr) &lt; w * 1.5) {<br/>    return vec4(color(iTime * 0.5), (1. - (abs(d - hr) - hw) / w) * 0.5);<br/>  }<br/>  return vec4(0.);<br/>}</code-body></code-box>
+<p>The issue here, as FabriceNeyret2 pointed out in their comment, is that arrays are slow in GLSL, and that I&apos;m not doing any antialiasing &lpar;which I can get for free!&rpar;. Surely, I could find a new way to fix these issues.</p>
+<h3>My second go</h3>
+<iframe frameborder="0" src="https://www.shadertoy.com/embed/tctGRf?gui=true&t=10&paused=true&muted=false" allowfullscreen style="aspect-ratio: 1"></iframe>
+<p>Now we&apos;re talking. Let&apos;s take a look at what&apos;s different now!</p>
+<code-box><code-lang>glsl</code-lang><code-body>vec4<br/>truchet(vec2 p, float r, float w)<br/>{<br/>  float hr = r / 2.;<br/>  float hw = w / 2.;<br/><br/>  vec2 b = floor(p / r) * r;<br/>  vec2 c = b + vec2(hr);<br/>  float h = float(hash(uvec2(abs(c * 100.))) % 4u);<br/>  float i = 3. - h;<br/><br/>  vec2 a0 = b + vec2(mod(h, 2.) * r, floor(h / 2.) * r);<br/>  vec2 a1 = b + vec2(mod(i, 2.) * r, floor(i / 2.) * r);<br/><br/>  float d1 = distance(p, a0);<br/>  float d2 = distance(p, a1);<br/><br/>  float d = min(d1, d2);<br/><br/>  vec4 glow = vec4(<br/>    color(triangle(iTime * 0.125, 3., 1.)), <br/>    (1. - (abs(d - hr) - hw) / w) * 0.5<br/>  );<br/><br/>  return mix(vec4(1.), glow, smoothstep(hw, hw + 1.414, abs(d - hr)));<br/>}</code-body></code-box>
+<p>Alright, so I got rid of the array! Instead, we have some math. The idea is that we pick a hash the same way as above, but instead of indexing into an array, we treat that hash as one of the four corners of our cell! Then, once we pick one corner of our cell, we can pick the diagonally opposing corner using <code-span>3 - h</code-span> where <code-span>h</code-span> is the first corner we picked.</p>
+<img src="./assets/truchet_expl.png" class="other-image"></img>
+<h3>Final product</h3>
+<p>Check out the full shader on <a href="https://www.shadertoy.com/view/tctGRf">Shadertoy</a>!</p>
+<separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><a href="#intro">Back to top &#x2934;</a></p>
+</div>
 <div id="c-prep" class="cnt">
 <img class="title-image" src="./assets/neovide_amKYGDFrKr.png" style="object-fit: scale-down; background-color: rgb(30, 30, 46)"></img>
 <h1>c preprocessor for html</h1>
@@ -75,6 +106,8 @@ Music:
 <img src="./assets/desmos.8fae8d39cc3f79809d9d.png" class="title-image"></img>
 <h1>a 3d renderer in 2d desmos</h1>
 <h2>11 may 2024</h2>
+<h3>Update 18/5/2025</h3>
+<p>This graph is featured in the 2024 Desmos Art Expo! Check it out at <a href="https://desmos.com/art#17">https://desmos.com/art</a>.</p>
 <p>This project started seven months ago, when my precalc teacher told us about his brilliant assignment: make an artistic graph in the Desmos Graphing calculator. I knew I wanted to make something in 3D, but I didn&apos;t get it working in time, so I ended up making this <a href="https://www.desmos.com/calculator/5pgpochvby">monstrosity</a>.</p>
 <p>About a month ago, he had us make another graph, and I knew I wanted to one-up myself. I thought back to that 3D renderer I tried to implement but failed to get working, and tried to fix it up!</p>
 <p><a href="https://www.desmos.com/calculator/gulcaggspf">Here</a> you can see my first attempt at a perspective projection in Desmos.</p>
@@ -104,8 +137,6 @@ Music:
 <code-box><code-lang>desmodder script</code-lang><code-body>t_spec =<br/>  max&lpar;<br/>    f_dot3v&lpar;<br/>      t_viewDirX / t_viewDirNorm,<br/>      t_viewDirY / t_viewDirNorm,<br/>      t_viewDirZ / t_viewDirNorm,<br/>      l[1] - 2 * x_norm * t_dotNormIncident,<br/>      l[2] - 2 * y_norm * t_dotNormIncident,<br/>      l[3] - 2 * z_norm * t_dotNormIncident<br/>    &rpar;,<br/>    0<br/>  &lpar; ^ 32<br/><br/>t_l =<br/>  sort&lpar;<br/>    0.1 + max&lpar;<br/>      x_norm * -l[1] + y_norm * -l[2] + z_norm * -l[3],<br/>      0<br/>    &rpar; + t_spec * 0.3,<br/>    t_depths<br/>  &rpar;</code-body></code-box>
 <h3>The final result</h3>
 <iframe src="https://www.desmos.com/calculator/hvcxvrd18m?embed" frameborder="0" style="aspect-ratio: 1;"></iframe>
-<h3>Update 18/5/2025</h3>
-<p>This graph is featured in the 2024 Desmos Art Expo! Check it out at <a href="https://desmos.com/art#17">https://desmos.com/art</a>.</p>
 <separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><a href="#intro">Back to top &#x2934;</a></p>
 </div>
 <div id="wip" class="cnt">

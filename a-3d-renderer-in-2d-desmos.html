@@ -3,6 +3,8 @@
 <img src="./assets/desmos.8fae8d39cc3f79809d9d.png" class="title-image"></img>
 <h1>a 3d renderer in 2d desmos</h1>
 <h2>11 may 2024</h2>
+<h3>Update 18/5/2025</h3>
+<p>This graph is featured in the 2024 Desmos Art Expo! Check it out at <a href="https://desmos.com/art#17">https://desmos.com/art</a>.</p>
 <p>This project started seven months ago, when my precalc teacher told us about his brilliant assignment: make an artistic graph in the Desmos Graphing calculator. I knew I wanted to make something in 3D, but I didn&apos;t get it working in time, so I ended up making this <a href="https://www.desmos.com/calculator/5pgpochvby">monstrosity</a>.</p>
 <p>About a month ago, he had us make another graph, and I knew I wanted to one-up myself. I thought back to that 3D renderer I tried to implement but failed to get working, and tried to fix it up!</p>
 <p><a href="https://www.desmos.com/calculator/gulcaggspf">Here</a> you can see my first attempt at a perspective projection in Desmos.</p>
@@ -32,7 +34,5 @@
 <code-box><code-lang>desmodder script</code-lang><code-body>t_spec =<br/>  max&lpar;<br/>    f_dot3v&lpar;<br/>      t_viewDirX / t_viewDirNorm,<br/>      t_viewDirY / t_viewDirNorm,<br/>      t_viewDirZ / t_viewDirNorm,<br/>      l[1] - 2 * x_norm * t_dotNormIncident,<br/>      l[2] - 2 * y_norm * t_dotNormIncident,<br/>      l[3] - 2 * z_norm * t_dotNormIncident<br/>    &rpar;,<br/>    0<br/>  &lpar; ^ 32<br/><br/>t_l =<br/>  sort&lpar;<br/>    0.1 + max&lpar;<br/>      x_norm * -l[1] + y_norm * -l[2] + z_norm * -l[3],<br/>      0<br/>    &rpar; + t_spec * 0.3,<br/>    t_depths<br/>  &rpar;</code-body></code-box>
 <h3>The final result</h3>
 <iframe src="https://www.desmos.com/calculator/hvcxvrd18m?embed" frameborder="0" style="aspect-ratio: 1;"></iframe>
-<h3>Update 18/5/2025</h3>
-<p>This graph is featured in the 2024 Desmos Art Expo! Check it out at <a href="https://desmos.com/art#17">https://desmos.com/art</a>.</p>
 <separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><a href="#intro">Back to top &#x2934;</a></p>
 </div>
