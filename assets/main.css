@@ -19,13 +19,6 @@
   font-weight: bold; 
 }
 
-@font-face {
-  font-family: "Iosevka Bendy Normal";
-  font-display: swap;
-  src:
-    url("./IosevkaBendy-Medium.ttf");
-}
-
 body {
   background-color: #fcf5f0;
   color: #20123a;
@@ -57,7 +50,7 @@ code-span {
   border-radius: 0.5rem;
   padding-left: 0.25rem;
   padding-right: 0.25rem;
-  font-family: "Iosevka Bendy Normal", sans-serif;
+  font-family: monospace;
 }
 
 lnk {
@@ -111,7 +104,7 @@ code-box {
 
 code-body {
   display: block;
-  font: 1rem "Iosevka Bendy Normal", sans-serif;
+  font: 1rem monospace;
   padding: 1em;
   white-space: preserve;
   /* padding-left: 1rem; */
