@@ -77,7 +77,7 @@
 <p>It&apos;s such an elegant pattern, and I wanted to go through my own process of making it in the most optimized way. In the end, I learned things I never knew about GLSL and discovered the really welcoming community on Shadertoy.</p>
 <h3>My first attempt</h3>
 <a href="https://www.shadertoy.com/view/tcc3z2">
-  _oimg(./assets/tr1.webp, A still of my first try at this shader.)
+  <img alt="A still of my first try at this shader." src="./assets/tr1.webp" class="other-image" loading="lazy"></img>
 </a>
 <p>The general idea is as follows:</p>
 <ul>
@@ -91,7 +91,7 @@
 <p>The issue here, as FabriceNeyret2 pointed out in their comment, is that arrays are slow in GLSL, and that I&apos;m not doing any antialiasing &lpar;which I can get for free!&rpar;. Surely, I could find a new way to fix these issues.</p>
 <h3>My second go</h3>
 <a href="https://www.shadertoy.com/view/tctGRf">
-  _oimg(./assets/tr2.webp, A still of my second try at this shader.)
+  <img alt="A still of my second try at this shader." src="./assets/tr2.webp" class="other-image" loading="lazy"></img>
 </a>
 <p>Now we&apos;re talking. Let&apos;s take a look at what&apos;s different now!</p>
 <code-box><code-lang>glsl</code-lang><code-body>vec4<br/>truchet(vec2 p, float r, float w)<br/>{<br/>  float hr = r / 2.;<br/>  float hw = w / 2.;<br/><br/>  vec2 b = floor(p / r) * r;<br/>  vec2 c = b + vec2(hr);<br/>  float h = float(hash(uvec2(abs(c * 100.))) % 4u);<br/>  float i = 3. - h;<br/><br/>  vec2 a0 = b + vec2(mod(h, 2.) * r, floor(h / 2.) * r);<br/>  vec2 a1 = b + vec2(mod(i, 2.) * r, floor(i / 2.) * r);<br/><br/>  float d1 = distance(p, a0);<br/>  float d2 = distance(p, a1);<br/><br/>  float d = min(d1, d2);<br/><br/>  vec4 glow = vec4(<br/>    color(triangle(iTime * 0.125, 3., 1.)), <br/>    (1. - (abs(d - hr) - hw) / w) * 0.5<br/>  );<br/><br/>  return mix(vec4(1.), glow, smoothstep(hw, hw + 1.414, abs(d - hr)));<br/>}</code-body></code-box>
