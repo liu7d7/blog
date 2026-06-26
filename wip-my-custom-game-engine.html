@@ -1,6 +1,5 @@
        
 <div id="wip" class="cnt">
-<img src="./assets/hana.76f260979c4f7f1a7010.png" class="title-image"></img>
 <h1>wip: my custom game engine</h1>
 <h2>5 may 2024</h2>
 <p>A short note:</p>
@@ -33,11 +32,11 @@
 <div style="margin-left: var(--padding); margin-right: var(--padding); width: calc(100% - 2 * var(--padding)); display: grid; gap: 1rem; grid-template-columns: 1fr 1fr;">
   <div>
     <h2 style="width: max-content; margin-left: 0; margin-right: 0;">Without LOD:</h2>
-    <img src="./assets/wip-pre-lod.png" style="max-width: 100%; border-radius: 1rem; box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color)"></img>
+    <img src="./assets/wip-pre-lod.webp" style="max-width: 100%; border-radius: 1rem; box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color)" loading="lazy" alt="Before LOD, vertex counts for all models are higher."></img>
   </div>
   <div>
     <h2 style="width: max-content; margin-left: 0; margin-right: 0;">With LOD:</h2>
-    <img src="./assets/wip-post-lod.png" style="max-width: 100%; border-radius: 1rem; box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color)"></img>
+    <img src="./assets/wip-post-lod.webp" style="max-width: 100%; border-radius: 1rem; box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color)" loading="lazy" alt="After LOD, vertex counts for all models are lower."></img>
   </div>
 </div>
 <h3>One last thing... &lpar;25 -&gt; 11 ms per frame&rpar;</h3>
@@ -46,10 +45,10 @@
 <code-box><code-body>BoyBaykiller: Nice!<br/>BoyBaykiller: Are you on an intel gpu?<br/>caps lock: nvidia<br/>caps lock: rtx 2060<br/>BoyBaykiller: ok, I know this seems stupid but can you make sure its actually using that with Console.WriteLine&lpar;GL.GetString&lpar;StringName.Renderer&rpar;&rpar;;<br/></code-body></code-box>
 <p>That prompted me to check whether OpenGL was actually rendering on my RX 6500M, because my laptop also has integrated graphics in it.</p>
 <p>It, uh, wasn&apos;t.</p>
-<img src="./assets/task_man.2dbf1a45a10843a3fa95.png" class="other-image"></img>
+<img alt="View of task manager showing that the dedicated GPU is unused at 0% and the integrated GPU is maxed out at 98%." src="./assets/task_man.2dbf1a45a10843a3fa95.webp" class="other-image" loading="lazy"></img>
 <p>To fix this, I added two lines of code that force AMD and nVidia drivers to use their proper GPUs.</p>
 <code-box><code-lang>C</code-lang><code-body>__attribute__((dllexport)) int AmdPowerXpressRequestHighPerformance = 1;<br/>__attribute__((dllexport)) DWORD NvOptimusEnablement = 0x00000001;</code-body></code-box>
 <h3>The final result</h3>
-<img src="./assets/hana_final.38625c2ee2f2747b0b15.jpg" class="other-image"></img>
+<img alt="A highly postprocessed image of a player model stood amongst trees." src="./assets/hana_final.38625c2ee2f2747b0b15.webp" class="other-image" loading="lazy"></img>
 <separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><a href="#intro">Back to top &#x2934;</a></p>
 </div>

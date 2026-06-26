@@ -1,6 +1,5 @@
        
 <div id="halftone" class="cnt">
-<img src="./assets/halftone.8200c71794da01617f63.png" class="title-image"></img>
 <h1>halftoning in glsl</h1>
 <h2>14 april 2024</h2>
 <p>
@@ -44,7 +43,7 @@ Because CMYK is symmetric to RGB, all one has to do to get the CMYK effect is su
 <p>
 To get the radius of each circle, I computed the average color of four pixels that surrounded each circle&apos;s center. Then, deciding whether to subtract color from that pixel is easy: if the average color is X% magenta, then fill the circle that covers X% of the square. Of course, it&apos;s impossible to get a circle to fill a square without it going over, so this calculation must be repeated for each neighboring square, too.
 </p>
-<img src="./assets/halftoning expl.d133c2f3231ae0b18469.png" class="other-image"></img>
+<img alt="Halftoning explanation; digital circles are used to simulate the effects of blending dots of ink on paper." src="./assets/halftoning expl.d133c2f3231ae0b18469.webp" class="other-image" loading="lazy"></img>
 <p>
 This works well on its own, but in order to get a better result, I had to blur the image first so that sharp edges weren&apos;t rendered badly. The unmodified code only samples the four corners of each square, so the average color of all the pixels in the square isn&apos;t taken into account. By blurring the image beforehand, we can save samples and still get the averaged out result when sampling only the corners. The end result is what you see at the top of your screen!
 </p>

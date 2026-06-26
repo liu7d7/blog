@@ -1,12 +1,11 @@
        
 <div id="truchet" class="cnt">
-<img src="./assets/firefox_4AGEoABwFr.jpg" class="title-image"></img>
 <h1>shadertoy 1: truchet</h1>
 <h2>18 may 2025</h2>
 <p>Wow, it&apos;s been more than a year since my last blog post. I suppose that&apos;s fitting, though, since this year&apos;s been a doozy.</p>
 <p>Well, I have some more time now, and I&apos;ve got so much energy to try some new stuff. I&apos;ve been inspired especially by some graphics programming demos that were posted in our CS Club&apos;s show-and-tell channel, as well as Revision Demoparty&apos;s Shader Showdown. I still remember the first time I saw live shader coding; I was genuinely amazed at how much they were able to pull off in just 25 minutes, as well as the level of polish they were able to deliver.</p>
 <p>Revision 2025 just happened, and Shader Showdown was once again pretty awesome. While the main event was the addition of compute shaders, one part of Flopine&apos;s submission really caught my eye.</p>
-<img src="./assets/chrome_RuryzLBmsZ.png" class="other-image"></img>
+<img alt="Flopine&apos;s shader showdown submission" src="./assets/chrome_RuryzLBmsZ.webp" class="other-image" loading="lazy"></img>
 <p>It&apos;s such an elegant pattern, and I wanted to go through my own process of making it in the most optimized way. In the end, I learned things I never knew about GLSL and discovered the really welcoming community on Shadertoy.</p>
 <h3>My first attempt</h3>
 <iframe frameborder="0" src="https://www.shadertoy.com/embed/tcc3z2?gui=true&t=10&paused=true&muted=false" allowfullscreen style="aspect-ratio: 16/9"></iframe>
@@ -25,13 +24,12 @@
 <p>Now we&apos;re talking. Let&apos;s take a look at what&apos;s different now!</p>
 <code-box><code-lang>glsl</code-lang><code-body>vec4<br/>truchet(vec2 p, float r, float w)<br/>{<br/>  float hr = r / 2.;<br/>  float hw = w / 2.;<br/><br/>  vec2 b = floor(p / r) * r;<br/>  vec2 c = b + vec2(hr);<br/>  float h = float(hash(uvec2(abs(c * 100.))) % 4u);<br/>  float i = 3. - h;<br/><br/>  vec2 a0 = b + vec2(mod(h, 2.) * r, floor(h / 2.) * r);<br/>  vec2 a1 = b + vec2(mod(i, 2.) * r, floor(i / 2.) * r);<br/><br/>  float d1 = distance(p, a0);<br/>  float d2 = distance(p, a1);<br/><br/>  float d = min(d1, d2);<br/><br/>  vec4 glow = vec4(<br/>    color(triangle(iTime * 0.125, 3., 1.)), <br/>    (1. - (abs(d - hr) - hw) / w) * 0.5<br/>  );<br/><br/>  return mix(vec4(1.), glow, smoothstep(hw, hw + 1.414, abs(d - hr)));<br/>}</code-body></code-box>
 <p>Alright, so I got rid of the array! Instead, we have some math. The idea is that we pick a hash the same way as above, but instead of indexing into an array, we treat that hash as one of the four corners of our cell! Then, once we pick one corner of our cell, we can pick the diagonally opposing corner using <code-span>3 - h</code-span> where <code-span>h</code-span> is the first corner we picked.</p>
-<img src="./assets/truchet_expl.png" class="other-image"></img>
+<img alt="Explanation of the calculation for the opposite corner. We simply subtract the corner index from 3." src="./assets/truchet_expl.webp" class="other-image" loading="lazy"></img>
 <h3>Final product</h3>
 <p>Check out the full shader on <a href="https://www.shadertoy.com/view/tctGRf">Shadertoy</a>!</p>
 <separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><a href="#intro">Back to top &#x2934;</a></p>
 </div>
 <div id="c-prep" class="cnt">
-<img class="title-image" src="./assets/neovide_amKYGDFrKr.png" style="object-fit: scale-down; background-color: rgb(30, 30, 46)"></img>
 <h1>c preprocessor for html</h1>
 <h2>19 may 2025</h2>
 <p>So, I lost the source code to my blog a couple weeks ago, and I think this is the opportunity to migrate all my content to a static site.</p>
@@ -50,11 +48,10 @@
 <separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><a href="#intro">Back to top &#x2934;</a></p>
 </div>
 <div id="3d-renderer-desmos" class="cnt">
-<img src="./assets/desmos.8fae8d39cc3f79809d9d.png" class="title-image"></img>
 <h1>a 3d renderer in 2d desmos</h1>
 <h2>11 may 2024</h2>
 <h3>Update 18/5/2025</h3>
-<p>This graph is featured in the 2024 Desmos Art Expo! Check it out at <a href="https://desmos.com/art#17">https://desmos.com/art</a>.</p>
+<p>This graph is featured in the 2024 Desmos Art Expo! Check it out on <a href="https://desmos.com/art#17">Desmos&apos;s art page</a>.</p>
 <p>This project started seven months ago, when my precalc teacher told us about his brilliant assignment: make an artistic graph in the Desmos Graphing calculator. I knew I wanted to make something in 3D, but I didn&apos;t get it working in time, so I ended up making this <a href="https://www.desmos.com/calculator/5pgpochvby">monstrosity</a>.</p>
 <p>About a month ago, he had us make another graph, and I knew I wanted to one-up myself. I thought back to that 3D renderer I tried to implement but failed to get working, and tried to fix it up!</p>
 <p><a href="https://www.desmos.com/calculator/gulcaggspf">Here</a> you can see my first attempt at a perspective projection in Desmos.</p>
@@ -69,7 +66,7 @@
 <p>Alright, I&apos;ve got the data now. Time to render it! Because I used the vertex/index buffer format that OpenGL uses, it was simple to get all the polygons rendered like so.</p>
 <code-box><code-lang>desmodder script</code-lang><code-body>polygon&lpar;<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx0],<br/>    y_vbo[i_vtx0],<br/>    z_vbo[i_vtx0]<br/>  &rpar;,<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx1],<br/>    y_vbo[i_vtx1],<br/>    z_vbo[i_vtx1]<br/>  &rpar;,<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx2],<br/>    y_vbo[i_vtx2],<br/>    z_vbo[i_vtx2]<br/>  &rpar;<br/>&rpar;</code-body></code-box>
 <p>Great! We&apos;ve got a working renderer now.</p>
-<img src="./assets/cube.412ea59a18319c5297af.png" class="other-image"></img>
+<img alt="A cube rendered with improperly occluded faces; faces behind others show up in front of them." src="./assets/cube.412ea59a18319c5297af.webp" class="other-image" loading="lazy"></img>
 <p>Oh.</p>
 <h3>Implementing depth sorting</h3>
 <p>Well, it&apos;s time to implement depth sorting! I&apos;ll describe my &lpar;slow&rpar; first attempt in detail here, and later on I&apos;ll go over optimizations. The main idea is this: if we draw the triangles in order from front to back, then the triangles in the back will be occluded by the triangles in front, like they&apos;re supposed to!</p>
@@ -87,7 +84,6 @@
 <separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><a href="#intro">Back to top &#x2934;</a></p>
 </div>
 <div id="wip" class="cnt">
-<img src="./assets/hana.76f260979c4f7f1a7010.png" class="title-image"></img>
 <h1>wip: my custom game engine</h1>
 <h2>5 may 2024</h2>
 <p>A short note:</p>
@@ -120,11 +116,11 @@
 <div style="margin-left: var(--padding); margin-right: var(--padding); width: calc(100% - 2 * var(--padding)); display: grid; gap: 1rem; grid-template-columns: 1fr 1fr;">
   <div>
     <h2 style="width: max-content; margin-left: 0; margin-right: 0;">Without LOD:</h2>
-    <img src="./assets/wip-pre-lod.png" style="max-width: 100%; border-radius: 1rem; box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color)"></img>
+    <img src="./assets/wip-pre-lod.webp" style="max-width: 100%; border-radius: 1rem; box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color)" loading="lazy" alt="Before LOD, vertex counts for all models are higher."></img>
   </div>
   <div>
     <h2 style="width: max-content; margin-left: 0; margin-right: 0;">With LOD:</h2>
-    <img src="./assets/wip-post-lod.png" style="max-width: 100%; border-radius: 1rem; box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color)"></img>
+    <img src="./assets/wip-post-lod.webp" style="max-width: 100%; border-radius: 1rem; box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color)" loading="lazy" alt="After LOD, vertex counts for all models are lower."></img>
   </div>
 </div>
 <h3>One last thing... &lpar;25 -&gt; 11 ms per frame&rpar;</h3>
@@ -133,15 +129,14 @@
 <code-box><code-body>BoyBaykiller: Nice!<br/>BoyBaykiller: Are you on an intel gpu?<br/>caps lock: nvidia<br/>caps lock: rtx 2060<br/>BoyBaykiller: ok, I know this seems stupid but can you make sure its actually using that with Console.WriteLine&lpar;GL.GetString&lpar;StringName.Renderer&rpar;&rpar;;<br/></code-body></code-box>
 <p>That prompted me to check whether OpenGL was actually rendering on my RX 6500M, because my laptop also has integrated graphics in it.</p>
 <p>It, uh, wasn&apos;t.</p>
-<img src="./assets/task_man.2dbf1a45a10843a3fa95.png" class="other-image"></img>
+<img alt="View of task manager showing that the dedicated GPU is unused at 0% and the integrated GPU is maxed out at 98%." src="./assets/task_man.2dbf1a45a10843a3fa95.webp" class="other-image" loading="lazy"></img>
 <p>To fix this, I added two lines of code that force AMD and nVidia drivers to use their proper GPUs.</p>
 <code-box><code-lang>C</code-lang><code-body>__attribute__((dllexport)) int AmdPowerXpressRequestHighPerformance = 1;<br/>__attribute__((dllexport)) DWORD NvOptimusEnablement = 0x00000001;</code-body></code-box>
 <h3>The final result</h3>
-<img src="./assets/hana_final.38625c2ee2f2747b0b15.jpg" class="other-image"></img>
+<img alt="A highly postprocessed image of a player model stood amongst trees." src="./assets/hana_final.38625c2ee2f2747b0b15.webp" class="other-image" loading="lazy"></img>
 <separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><a href="#intro">Back to top &#x2934;</a></p>
 </div>
 <div id="tosuto" class="cnt">
-<img src="./assets/tosuto.01e6cbe2d3827717b1dd.png" class="title-image" style="object-fit: scale-down; background-color: rgb(30, 30, 46)"></img>
 <h1>t&#x0000014d;suto: a scripting language</h1>
 <h2>21 april 2024</h2>
 <p>I&apos;ve recently been wanting to get back into making programming languages again, so I&apos;ve started up this project to fulfill that desire. Though I didn&apos;t have a goal for what the project would be, I knew that I wanted it to have a really minimal syntax that, given it was my first language, made at least some sense with good amounts of continuity.</p>
@@ -163,7 +158,6 @@
 <separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><a href="#intro">Back to top &#x2934;</a></p>
 </div>
 <div id="halftone" class="cnt">
-<img src="./assets/halftone.8200c71794da01617f63.png" class="title-image"></img>
 <h1>halftoning in glsl</h1>
 <h2>14 april 2024</h2>
 <p>
@@ -207,7 +201,7 @@ Because CMYK is symmetric to RGB, all one has to do to get the CMYK effect is su
 <p>
 To get the radius of each circle, I computed the average color of four pixels that surrounded each circle&apos;s center. Then, deciding whether to subtract color from that pixel is easy: if the average color is X% magenta, then fill the circle that covers X% of the square. Of course, it&apos;s impossible to get a circle to fill a square without it going over, so this calculation must be repeated for each neighboring square, too.
 </p>
-<img src="./assets/halftoning expl.d133c2f3231ae0b18469.png" class="other-image"></img>
+<img alt="Halftoning explanation; digital circles are used to simulate the effects of blending dots of ink on paper." src="./assets/halftoning expl.d133c2f3231ae0b18469.webp" class="other-image" loading="lazy"></img>
 <p>
 This works well on its own, but in order to get a better result, I had to blur the image first so that sharp edges weren&apos;t rendered badly. The unmodified code only samples the four corners of each square, so the average color of all the pixels in the square isn&apos;t taken into account. By blurring the image beforehand, we can save samples and still get the averaged out result when sampling only the corners. The end result is what you see at the top of your screen!
 </p>

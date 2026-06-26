@@ -26,8 +26,8 @@
 }
 
 body {
-  background-color: ghostwhite;
-  color: #1e1e2f;
+  background-color: #fcf5f0;
+  color: #20123a;
   margin: 0;
   padding: 0;
   margin-bottom: 1.33rem;
@@ -36,7 +36,7 @@ body {
   --border-width: 0.125rem;
   --shadow-radius: 1rem;
   --shadow-y-offset: 0.5rem;
-  --shadow-color: lightslategray;
+  --shadow-color: rgba(16, 9, 29, 0.5);
 }
 
 @media (min-width:641px) {  
@@ -56,7 +56,7 @@ code-span {
   border-radius: 0.5rem;
   padding-left: 0.25rem;
   padding-right: 0.25rem;
-  font: 1rem "Iosevka Bendy Normal", sans-serif;
+  font-family: "Iosevka Bendy Normal", sans-serif;
 }
 
 lnk {
@@ -75,19 +75,23 @@ spacer {
 
 .cnt {
   padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  place-content: center;
 }
 
 .title-image {
   display: block;
-  width: calc(100% - 2rem);
-  height: 16rem;
-  margin: 1rem;
-  margin-top: 0rem;
   overflow: clip;
   padding: 0;
   border-radius: 1rem;
   object-fit: cover;
+  aspect-ratio: 8/1;
   box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color);
+  margin-left: var(--padding);
+  margin-right: var(--padding);
+  margin-bottom: calc(1.33rem / 2);
+  margin-top: calc(1.33rem / 2);
   /* border: var(--border-width) #1e1e2f solid; */
 }
 
@@ -131,8 +135,8 @@ separator {
 }
 
 iframe, .other-image {
-  width: calc(100% - 2 * var(--padding));
-  margin-left: var(--padding);
+  width: calc(100% - 2 * var(--padding) - 8rem);
+  margin-left: calc(var(--padding) + 4rem);
   border-radius: 1rem;
   box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color); 
 }

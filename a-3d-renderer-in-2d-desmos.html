@@ -1,10 +1,9 @@
        
 <div id="3d-renderer-desmos" class="cnt">
-<img src="./assets/desmos.8fae8d39cc3f79809d9d.png" class="title-image"></img>
 <h1>a 3d renderer in 2d desmos</h1>
 <h2>11 may 2024</h2>
 <h3>Update 18/5/2025</h3>
-<p>This graph is featured in the 2024 Desmos Art Expo! Check it out at <a href="https://desmos.com/art#17">https://desmos.com/art</a>.</p>
+<p>This graph is featured in the 2024 Desmos Art Expo! Check it out on <a href="https://desmos.com/art#17">Desmos&apos;s art page</a>.</p>
 <p>This project started seven months ago, when my precalc teacher told us about his brilliant assignment: make an artistic graph in the Desmos Graphing calculator. I knew I wanted to make something in 3D, but I didn&apos;t get it working in time, so I ended up making this <a href="https://www.desmos.com/calculator/5pgpochvby">monstrosity</a>.</p>
 <p>About a month ago, he had us make another graph, and I knew I wanted to one-up myself. I thought back to that 3D renderer I tried to implement but failed to get working, and tried to fix it up!</p>
 <p><a href="https://www.desmos.com/calculator/gulcaggspf">Here</a> you can see my first attempt at a perspective projection in Desmos.</p>
@@ -19,7 +18,7 @@
 <p>Alright, I&apos;ve got the data now. Time to render it! Because I used the vertex/index buffer format that OpenGL uses, it was simple to get all the polygons rendered like so.</p>
 <code-box><code-lang>desmodder script</code-lang><code-body>polygon&lpar;<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx0],<br/>    y_vbo[i_vtx0],<br/>    z_vbo[i_vtx0]<br/>  &rpar;,<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx1],<br/>    y_vbo[i_vtx1],<br/>    z_vbo[i_vtx1]<br/>  &rpar;,<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx2],<br/>    y_vbo[i_vtx2],<br/>    z_vbo[i_vtx2]<br/>  &rpar;<br/>&rpar;</code-body></code-box>
 <p>Great! We&apos;ve got a working renderer now.</p>
-<img src="./assets/cube.412ea59a18319c5297af.png" class="other-image"></img>
+<img alt="A cube rendered with improperly occluded faces; faces behind others show up in front of them." src="./assets/cube.412ea59a18319c5297af.webp" class="other-image" loading="lazy"></img>
 <p>Oh.</p>
 <h3>Implementing depth sorting</h3>
 <p>Well, it&apos;s time to implement depth sorting! I&apos;ll describe my &lpar;slow&rpar; first attempt in detail here, and later on I&apos;ll go over optimizations. The main idea is this: if we draw the triangles in order from front to back, then the triangles in the back will be occluded by the triangles in front, like they&apos;re supposed to!</p>
