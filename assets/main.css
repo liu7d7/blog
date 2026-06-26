@@ -136,8 +136,8 @@ separator {
 }
 
 iframe, .other-image {
-  width: calc(100% - 2 * var(--padding) - 8rem);
-  margin-left: calc(var(--padding) + 4rem);
+  width: calc(100% - 2 * var(--padding) - 4rem);
+  margin-left: calc(var(--padding) + 2rem);
   border-radius: 1rem;
   box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color); 
 }
