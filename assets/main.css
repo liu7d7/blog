@@ -21,6 +21,7 @@
 
 @font-face {
   font-family: "Iosevka Bendy Normal";
+  font-display: swap;
   src:
     url("./IosevkaBendy-Medium.ttf");
 }
