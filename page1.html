@@ -54,7 +54,7 @@
 <p>This graph is featured in the 2024 Desmos Art Expo! Check it out on <a href="https://desmos.com/art#17">Desmos&apos;s art page</a>.</p>
 <p>This project started seven months ago, when my precalc teacher told us about his brilliant assignment: make an artistic graph in the Desmos Graphing calculator. I knew I wanted to make something in 3D, but I didn&apos;t get it working in time, so I ended up making this <a href="https://www.desmos.com/calculator/5pgpochvby">monstrosity</a>.</p>
 <p>About a month ago, he had us make another graph, and I knew I wanted to one-up myself. I thought back to that 3D renderer I tried to implement but failed to get working, and tried to fix it up!</p>
-<p><a href="https://www.desmos.com/calculator/gulcaggspf">Here</a> you can see my first attempt at a perspective projection in Desmos.</p>
+<p>In this <a href="https://www.desmos.com/calculator/gulcaggspf">graph</a> you can see my first attempt at a perspective projection in Desmos.</p>
 <h3>Getting over Desmos&apos; quirks</h3>
 <p>To get to this point, I had to jump over so many hurdles. For one, Desmos doesn&apos;t support lists of lists, which makes doing any operation that requires multiple positions clumsy. The best way I&apos;ve come up with to mitigate this is to store one list for each component of the calculation.</p>
 <p>The lack of lists of lists also makes representing matrices annoying. I settled on flattening out the list and using the formula <code-span>matrix[row * width + column]</code-span> to get the value of the cell.</p>
