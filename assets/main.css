@@ -122,7 +122,7 @@ code-lang {
   padding: 0.5rem;
   padding-left: 1rem;
   font: 1.125rem "Faune", sans-serif;
-  color: #7e747c;
+  color: hsv(312, 8%, 30%);
   border-top: var(--border-width) lightslategray dotted;
   /* border-bottom: var(--border-width) #1e1e2f solid; */
 }
@@ -173,14 +173,14 @@ h1 {
 
 h2 {
   font: 1.125rem "Faune", sans-serif;
-  color: #7e747c;
+  color: hsv(312, 8%, 30%);
   margin-left: var(--padding);
   margin-right: var(--padding);
 }
 
 h3 {
   font: 1.5rem "Faune", sans-serif;
-  color: #7e747c;
+  color: hsv(312, 8%, 30%);
   margin-left: var(--padding);
   margin-right: var(--padding);
 }
