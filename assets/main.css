@@ -96,6 +96,7 @@ code-box {
   flex-direction: column-reverse;
   overflow: clip;
   border-radius: 1rem;
+  border: var(--border-width) lightslategray solid;
   box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color); 
   margin-left: var(--padding);
   margin-right: var(--padding);
