@@ -20,8 +20,8 @@
 }
 
 body {
-  background-color: #fcf5f0;
-  color: #20123a;
+  background-color: ghostwhite;
+  color: #1e1e2f;
   margin: 0;
   padding: 0;
   margin-bottom: 1.33rem;
@@ -30,7 +30,7 @@ body {
   --border-width: 0.125rem;
   --shadow-radius: 1rem;
   --shadow-y-offset: 0.5rem;
-  --shadow-color: rgba(16, 9, 29, 0.5);
+  --shadow-color: rgba(30, 30, 47, 0.1);
 }
 
 @media (min-width:641px) {  
