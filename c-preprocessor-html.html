@@ -1,19 +1,22 @@
        
 <div id="c-prep" class="cnt">
-<h1>c preprocessor for html</h1>
-<h2>19 may 2025</h2>
-<p>So, I lost the source code to my blog a couple weeks ago, and I think this is the opportunity to migrate all my content to a static site.</p>
-<p>I won&apos;t lie, I have no idea how web frameworks work, and unfortunately I don&apos;t want to learn them at this point since I&apos;m busy with other things. I just want to get this blog out the door, but at the same time I want my experience writing posts to be ergonomic.</p>
-<h3><code-span>cpp</code-span> as a templating tool</h3>
-<p>GCC &lpar;the C compiler&rpar; provides an executable called <code-span>cpp</code-span>, which allows you to run the C preprocessing step on any file. That&apos;s pretty much all you need to get started; <code-span>&num;include</code-span> and <code-span>&num;define</code-span> work as expected!</p>
-<p>One thing to keep in mind, though, is that <code-span>cpp</code-span> outputs <code-span>&num;line</code-span> directives. I disable these using the <code-span>-P</code-span> flag.</p>
-<p>Further, the preprocessor turns Unicode characters into the format used for C programs: <code-span>&bsol;U0000XXXX</code-span>, so I use a small script to regex replace all those sequences with their HTML equivalents.</p>
-<p>Other than that, the only issue is preserving whitespace, so I added special case escapes that get <code-span>.replace</code-span>&apos;d in the beforementioned script.</p>
-<h3>Speeding up iteration times</h3>
-<p>While I disagree with how React encourages the use of unnecessary JS, I concede that iteration times are significantly decreased with its templating capabilities and hot-reloading support.</p>
-<p>Since I&apos;m making a static page here, I don&apos;t care so much about the hot-reloading, but I do want templates and fast rebuilds.</p>
-<p>Luckily, the C Preprocessor is heavily optimized, and that means that running it over all the HTML source files is fast. A simple batch script runs both <code-span>cpp</code-span> and the Unicode conversion, and the site is built!</p>
-<h3>Is this something really useful?</h3>
-<p>I think so! It took only a couple hours to get everything set up, and the blogging experience is actually pretty okay! Plus, I don&apos;t have to deal with opening and closing HTML tags, because I get macros, and I get the flexibility of HTML, since everything is still an HTML file! This really is the best of both worlds. I&apos;m waiting for the footgun moment to happen though :sweat_smile:</p>
-<separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/><a href="#intro">Back to top &#x2934;</a></p>
+  <div>
+    <h1>c preprocessor for html</h1>
+    <h2>19 may 2025</h2>
+    <separator></separator>
+    <p>so, i lost the source code to my blog a couple weeks ago, and i think this is the opportunity to migrate all my content to a static site.</p>
+    <p>i won&apos;t lie, i have no idea how web frameworks work, and unfortunately i don&apos;t want to learn them at this point since i&apos;m busy with other things. i just want to get this blog out the door, but at the same time i want my experience writing posts to be ergonomic.</p>
+    <h3><code-span>cpp</code-span> as a templating tool</h3>
+    <p>gcc &lpar;the c compiler&rpar; provides an executable called <code-span>cpp</code-span>, which allows you to run the c preprocessing step on any file. that&apos;s pretty much all you need to get started; <code-span>&num;include</code-span> and <code-span>&num;define</code-span> work as expected!</p>
+    <p>One thing to keep in mind, though, is that <code-span>cpp</code-span> outputs <code-span>&num;line</code-span> directives. I disable these using the <code-span>-P</code-span> flag.</p>
+    <p>further, the preprocessor turns unicode characters into the format used for c programs: <code-span>&bsol;u0000xxxx</code-span>, so i use a small script to regex replace all those sequences with their html equivalents.</p>
+    <p>other than that, the only issue is preserving whitespace, so i added special case escapes that get <code-span>.replace</code-span>&apos;d in the beforementioned script.</p>
+    <h3>speeding up iteration times</h3>
+    <p>while i disagree with how react encourages the use of unnecessary js, i concede that iteration times are significantly decreased with its templating capabilities and hot-reloading support.</p>
+    <p>since i&apos;m making a static page here, i don&apos;t care so much about the hot-reloading, but i do want templates and fast rebuilds.</p>
+    <p>luckily, the c preprocessor is heavily optimized, and that means that running it over all the html source files is fast. a simple batch script runs both <code-span>cpp</code-span> and the unicode conversion, and the site is built!</p>
+    <h3>is this something really useful?</h3>
+    <p>i think so! it took only a couple hours to get everything set up, and the blogging experience is actually pretty okay. plus, i don&apos;t have to deal with opening and closing html tags, because i get macros, and i get the flexibility of html, since everything is still an html file! this really is the best of both worlds. i&apos;m waiting for the footgun moment to happen though</p>
+    <separator></separator><p style="margin-bottom: 0;padding-bottom:0;">that&apos;s the end of this post. thanks for reading!<br/><a href="#intro">back to top &#x2934;</a></p>
+  </div>
 </div>
