@@ -1,5 +1,6 @@
 #pragma once
 
+#define grad(__s, __x, __y) <div style="position:absolute;top:calc(-"#__s" / 2 + "#__y");left:calc(-"#__s" / 2 + "#__x");width:"#__s";height:"#__s";background:none;background:radial-gradient(circle,rgba(247, 209, 244, 1) 0%, rgba(252, 245, 240, 0) 65%);z-index:-1"></div>
 #define __code_box(__lang, ...) <code-box><code-lang>__lang</code-lang><code-body>__VA_ARGS__</code-body></code-box>
 #define __code_box_anon(...) <code-box><code-body>__VA_ARGS__</code-body></code-box>
 #define __h1(...) <h1>__VA_ARGS__</h1>
@@ -9,6 +10,6 @@
 #define __cs(...) <code-span>__VA_ARGS__</code-span>
 #define __aside(...) <p style="padding-left: 1rem; padding-right: 1rem">__VA_ARGS__</p>
 #define __a(disp, lnk) <a href=#lnk>disp</a>
-#define __timg(__src) <img src=#__src class="title-image"></img>
-#define __oimg(__src) <img src=#__src class="other-image"></img>
-#define __ending <separator></separator><p>That&apos;s the end of this post. Thanks for reading!<br/>__a(Back to top &#x2934;, #intro)</p>
+#define __timg(__src, __alt) <img alt=#__alt src=#__src class="title-image" loading="lazy"></img>
+#define __oimg(__src, __alt) <img alt=#__alt src=#__src class="other-image" loading="lazy"></img>
+#define __ending <separator></separator><p style="margin-bottom: 0;padding-bottom:0;">that&apos;s the end of this post. thanks for reading!<br/>__a(back to top &#x2934;, #intro)</p>

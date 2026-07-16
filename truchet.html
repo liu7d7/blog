@@ -1,0 +1,110 @@
+#include "basic.html"
+
+<div id="truchet" class="cnt">
+  <div>
+    __h1(shadertoy 1: truchet)
+    __h2(18 may 2025)
+    <separator></separator>
+    __p(wow, it&apos;s been more than a year since my last blog post. i suppose that&apos;s fitting, though, since this year&apos;s been a doozy.)
+    __p(well, i have some more time now, and i&apos;ve got so much energy to try some new stuff. i&apos;ve been inspired especially by some graphics programming demos that were posted in our cs club&apos;s show-and-tell channel, as well as the revision demoparty&apos;s shader showdown. i still remember the first time i saw live shader coding; i was genuinely amazed at how much they were able to pull off in just 25 minutes, as well as the level of polish they were able to deliver.)
+    __p(revision 2025 just happened, and shader showdown was once again pretty awesome. while the main event was the addition of compute shaders, one part of flopine&apos;s submission really caught my eye.)
+    __oimg(./assets/chrome_RuryzLBmsZ.webp, flopine&apos;s shader showdown submission)
+    __p(it&apos;s such an elegant pattern, and i wanted to go through my own process of making it in the most optimized way. in the end, i learned things i never knew about GLSL and discovered the really welcoming community on shadertoy.)
+    __h3(my first attempt)
+    <a href="https://www.shadertoy.com/view/tcc3z2">
+      __oimg(./assets/tr1.webp, a still of my first try at this shader.)
+    </a>
+    __p(the general idea is as follows:)
+    <ul>
+      \t<li>for each pixel, find which cell it&apos;s in; each cell is __cs(w) wide.</li>
+      \t<li>find the hash at the bottom left of the cell mod 4.</li>
+      \t<li>index into an array that decides the two points about which we&apos;re making circles</li>
+      \t<li>draw the circles with some nice glow</li>
+      \t<li>repeat this for different scales with some nice blending!</li>
+    </ul>
+    __code_box(
+    GLSL,
+    vec4<br/>
+    truchet(vec2 p, float r, float w)<br/>
+    {<br/>
+    \tfloat hr = r / 2.;<br/>
+    \tfloat hw = w / 2.;<br/>
+    <br/>
+    \tvec2 b = floor(p / r) * r;<br/>
+    \tvec2 c = b + vec2(hr);<br/>
+    \tuint h = hash(uvec2(abs(c * 100.))) % 4u;<br/>
+    <br/>
+    \tvec2 a[] = vec2[](<br/>
+    \t\tb + vec2(r, 0),<br/>
+    \t\tb + vec2(r),<br/>
+    \t\tb + vec2(0, r),<br/>
+    \t\tb,<br/>
+    \t\tb + vec2(0, r),<br/>
+    \t\tb,<br/>
+    \t\tb + vec2(r, 0),<br/>
+    \t\tb + vec2(r)<br/>
+    \t);<br/>
+    <br/>
+    \tfloat d = distance(p, a[h]);<br/>
+    \tif (abs(d - hr) &lt; hw) {<br/>
+    \t\treturn vec4(1.);<br/>
+    \t}<br/>
+    <br/>
+    \tif (abs(d - hr) &lt; w * 1.5) {<br/>
+    \t\treturn vec4(color(itime * 0.5), (1. - (abs(d - hr) - hw) / w) * 0.5);<br/>
+    \t}<br/>
+    <br/>
+    \td = distance(p, a[h + 4u]);<br/>
+    \tif (abs(d - hr) &lt; hw) {<br/>
+    \t\treturn vec4(1.);<br/>
+    \t}<br/>
+    <br/>
+    \tif (abs(d - hr) &lt; w * 1.5) {<br/>
+    \t\treturn vec4(color(itime * 0.5), (1. - (abs(d - hr) - hw) / w) * 0.5);<br/>
+    \t}<br/>
+
+    \treturn vec4(0.);<br/>
+    }
+    )
+    __p(the issue here, as fabriceneyret2 pointed out in their comment, is that arrays are slow in GLSL, and that i&apos;m not doing any antialiasing &lpar;which i can get for free!&rpar;. surely, i could find a new way to fix these issues.)
+    __h3(my second go)
+    <a href="https://www.shadertoy.com/view/tctGRf">
+      __oimg(./assets/tr2.webp, a still of my second try at this shader.)
+    </a>
+    __p(now we&apos;re talking. let&apos;s take a look at what&apos;s different now!)
+    __code_box(
+    GLSL,
+    vec4<br/>
+    truchet(vec2 p, float r, float w)<br/>
+    {<br/>
+    \tfloat hr = r / 2.;<br/>
+    \tfloat hw = w / 2.;<br/>
+    <br/>
+    \tvec2 b = floor(p / r) * r;<br/>
+    \tvec2 c = b + vec2(hr);<br/>
+    \tfloat h = float(hash(uvec2(abs(c * 100.))) % 4u);<br/>
+    \tfloat i = 3. - h;<br/>
+    <br/>
+    \tvec2 a0 = b + vec2(mod(h, 2.) * r, floor(h / 2.) * r);<br/>
+    \tvec2 a1 = b + vec2(mod(i, 2.) * r, floor(i / 2.) * r);<br/>
+    <br/>
+    \tfloat d1 = distance(p, a0);<br/>
+    \tfloat d2 = distance(p, a1);<br/>
+    <br/>
+    \tfloat d = min(d1, d2);<br/>
+    <br/>
+    \tvec4 glow = vec4(<br/>
+    \t\tcolor(triangle(itime * 0.125, 3., 1.)), <br/>
+    \t\t(1. - (abs(d - hr) - hw) / w) * 0.5<br/>
+    \t);<br/>
+    <br/>
+    \treturn mix(vec4(1.), glow, smoothstep(hw, hw + 1.414, abs(d - hr)));<br/>
+    }
+    )
+    __p(alright, so i got rid of the array! instead, we have some math. the idea is that we pick a hash the same way as above, but instead of indexing into an array, we treat that hash as one of the four corners of our cell! then, once we pick one corner of our cell, we can pick the diagonally opposing corner using __cs(3 - h) where __cs(h) is the first corner we picked.)
+    __oimg(./assets/truchet_expl.webp, explanation of the calculation for the opposite corner. we simply subtract the corner index from 3.)
+    __h3(final product)
+    __p(check out the full shader on __a(shadertoy, https:\/\/www.shadertoy.com\/view\/tctGRf)!)
+    __ending
+  </div>
+</div>

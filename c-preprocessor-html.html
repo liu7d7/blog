@@ -1,0 +1,23 @@
+#include "basic.html"
+
+<div id="c-prep" class="cnt">
+  <div>
+    __h1(c preprocessor for html)
+    __h2(19 may 2025)
+    <separator></separator>
+    __p(so, i lost the source code to my blog a couple weeks ago, and i think this is the opportunity to migrate all my content to a static site.)
+    __p(i won&apos;t lie, i have no idea how web frameworks work, and unfortunately i don&apos;t want to learn them at this point since i&apos;m busy with other things. i just want to get this blog out the door, but at the same time i want my experience writing posts to be ergonomic.)
+    __h3(__cs(cpp) as a templating tool)
+    __p(gcc &lpar;the c compiler&rpar; provides an executable called __cs(cpp), which allows you to run the c preprocessing step on any file. that&apos;s pretty much all you need to get started; __cs(&num;include) and __cs(&num;define) work as expected!)
+    __p(one thing to keep in mind, though, is that __cs(cpp) outputs __cs(&num;line) directives. i disable these using the __cs(-P) flag.)
+    __p(further, the preprocessor turns unicode characters into the format used for c programs: __cs(&bsol;u0000xxxx), so i use a small script to regex replace all those sequences with their html equivalents.)
+    __p(other than that, the only issue is preserving whitespace, so i added special case escapes that get __cs(.replace)&apos;d in the beforementioned script.)
+    __h3(speeding up iteration times)
+    __p(while i disagree with how react encourages the use of unnecessary js, i concede that iteration times are significantly decreased with its templating capabilities and hot-reloading support.)
+    __p(since i&apos;m making a static page here, i don&apos;t care so much about the hot-reloading, but i do want templates and fast rebuilds.)
+    __p(luckily, the c preprocessor is heavily optimized, and that means that running it over all the html source files is fast. a simple batch script runs both __cs(cpp) and the unicode conversion, and the site is built!)
+    __h3(is this something really useful?)
+    __p(i think so! it took only a couple hours to get everything set up, and the blogging experience is actually pretty okay. plus, i don&apos;t have to deal with opening and closing html tags, because i get macros, and i get the flexibility of html, since everything is still an html file! this really is the best of both worlds. i&apos;m waiting for the footgun moment to happen though)
+    __ending
+  </div>
+</div>

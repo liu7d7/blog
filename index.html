@@ -1,17 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
- <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Michael Liu's programming blog with links to their other projects as well as their music blog and digital photography portfolio.">
     <title>mliu.dev</title>
-    <link rel="stylesheet" href="assets/main.css">
+    <link rel="preload" href="./assets/Faune-TextRegular.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" href="./assets/Faune-TextBold.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" href="./assets/Faune-DisplayBlack.otf" as="font" type="font/otf" crossorigin>
+    <link rel="dns-prefetch" href="https://www.desmos.com"/>
+    <link rel="preload" href="./assets/main.css" as="style"/>
+    <link rel="preload" href="./assets/main.js" as="script"/>
+    <meta name="referrer" content="strict-origin-when-cross-origin"></meta> \
+
+    <link rel="stylesheet" href="assets/main.css"> 
   </head>
   <body>
     #include "intro.html"
+    <main role="main">
     <div id="body">
       #include "page1.html"
     </div>
+    </main>
+    #include "pagenav.html"
   </body>
   <script src="assets/main.js"></script>
 </html>
+
+
+
+
+
 
