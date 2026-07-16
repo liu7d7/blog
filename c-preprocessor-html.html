@@ -8,7 +8,7 @@
     <p>i won&apos;t lie, i have no idea how web frameworks work, and unfortunately i don&apos;t want to learn them at this point since i&apos;m busy with other things. i just want to get this blog out the door, but at the same time i want my experience writing posts to be ergonomic.</p>
     <h3><code-span>cpp</code-span> as a templating tool</h3>
     <p>gcc &lpar;the c compiler&rpar; provides an executable called <code-span>cpp</code-span>, which allows you to run the c preprocessing step on any file. that&apos;s pretty much all you need to get started; <code-span>&num;include</code-span> and <code-span>&num;define</code-span> work as expected!</p>
-    <p>One thing to keep in mind, though, is that <code-span>cpp</code-span> outputs <code-span>&num;line</code-span> directives. I disable these using the <code-span>-P</code-span> flag.</p>
+    <p>one thing to keep in mind, though, is that <code-span>cpp</code-span> outputs <code-span>&num;line</code-span> directives. i disable these using the <code-span>-P</code-span> flag.</p>
     <p>further, the preprocessor turns unicode characters into the format used for c programs: <code-span>&bsol;u0000xxxx</code-span>, so i use a small script to regex replace all those sequences with their html equivalents.</p>
     <p>other than that, the only issue is preserving whitespace, so i added special case escapes that get <code-span>.replace</code-span>&apos;d in the beforementioned script.</p>
     <h3>speeding up iteration times</h3>
