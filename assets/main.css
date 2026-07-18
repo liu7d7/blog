@@ -22,6 +22,19 @@ time, mark, audio, video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+  text-wrap: pretty;
+}
+i::before {
+  content: '*';
+}
+i::after {
+  content: '*';
+}
+sup {
+  color: inherit;
+  vertical-align: super;
+  font: inherit;
+  font-size: .6rem;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
@@ -57,6 +70,10 @@ table {
   src:
     url("./Faune-TextBold.otf") format("opentype");
   font-weight: bold; 
+}
+
+b {
+  font-weight: bold;
 }
 
 @font-face {
@@ -164,7 +181,7 @@ separator {
   margin-top: 1.33rem;
 }
 
-.other-image {
+.other-image, lite-youtube {
   width: calc(100% - 2 * var(--padding) - 4rem);
   margin-left: calc(var(--padding) + 2rem);
   border-radius: 1rem;
