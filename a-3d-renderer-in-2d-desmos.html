@@ -20,7 +20,7 @@
     <p>alright, i&apos;ve got the data now. time to render it! because i used the vertex/index buffer format that opengl uses, it was simple to get all the polygons rendered like so.</p>
     <code-box><code-lang>desmodder script</code-lang><code-body>polygon&lpar;<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx0],<br/>    y_vbo[i_vtx0],<br/>    z_vbo[i_vtx0]<br/>  &rpar;,<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx1],<br/>    y_vbo[i_vtx1],<br/>    z_vbo[i_vtx1]<br/>  &rpar;,<br/>  f_transform&lpar;<br/>    M_world2ndc,<br/>    x_vbo[i_vtx2],<br/>    y_vbo[i_vtx2],<br/>    z_vbo[i_vtx2]<br/>  &rpar;<br/>&rpar;</code-body></code-box>
     <p>great! we&apos;ve got a working renderer now.</p>
-    <img alt="A cube rendered with improperly occluded faces; faces behind others show up in front of them." src="./assets/cube.412ea59a18319c5297af.webp" class="other-image" loading="lazy"></img>
+    <div class="centerer"><img alt="A cube rendered with improperly occluded faces; faces behind others show up in front of them." src="./assets/cube.412ea59a18319c5297af.webp" class="other-image" loading="lazy"></img></div>
     <p>oh.</p>
     <h3>implementing depth sorting</h3>
     <p>well, it&apos;s time to implement depth sorting! i&apos;ll describe my &lpar;slow&rpar; first attempt in detail here, and later on i&apos;ll go over optimizations. the main idea is this: if we draw the triangles in order from front to back, then the triangles in the back will be occluded by the triangles in front, like they&apos;re supposed to!</p>
@@ -35,7 +35,7 @@
     <code-box><code-lang>desmodder script</code-lang><code-body>t_spec =<br/>  max&lpar;<br/>    f_dot3v&lpar;<br/>      t_viewDirX / t_viewDirNorm,<br/>      t_viewDirY / t_viewDirNorm,<br/>      t_viewDirZ / t_viewDirNorm,<br/>      l[1] - 2 * x_norm * t_dotNormIncident,<br/>      l[2] - 2 * y_norm * t_dotNormIncident,<br/>      l[3] - 2 * z_norm * t_dotNormIncident<br/>    &rpar;,<br/>    0<br/>  &rpar; ^ 32<br/><br/>t_l =<br/>  sort&lpar;<br/>    0.1 + max&lpar;<br/>      x_norm * -l[1] + y_norm * -l[2] + z_norm * -l[3],<br/>      0<br/>    &rpar; + t_spec * 0.3,<br/>    t_depths<br/>  &rpar;</code-body></code-box>
     <h3>the final result</h3>
     <a href="https://www.desmos.com/art-2024#17;n7r5dqo9w5">
-      <img alt="A still of my submission to the 2024 Desmos Math Expo." src="./assets/des.webp" class="other-image" loading="lazy"></img>
+      <div class="centerer"><img alt="A still of my submission to the 2024 Desmos Math Expo." src="./assets/des.webp" class="other-image" loading="lazy"></img></div>
     </a>
     <separator></separator><p style="margin-bottom: 0;padding-bottom:0;">that&apos;s the end of this post. thanks for reading!<br/><a href="#intro">back to top &#x2934;</a></p>
   </div>

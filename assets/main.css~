@@ -181,22 +181,11 @@ separator {
   margin-top: 1.33rem;
 }
 
-.other-image {
-  max-width: calc(100% - 2 * var(--padding) - 4rem);
-  max-height: 20rem;
-  border-radius: 1rem;
-  box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color); 
-}
-
-.other-image-old {
+.other-image, lite-youtube {
   width: calc(100% - 2 * var(--padding) - 4rem);
   margin-left: calc(var(--padding) + 2rem);
   border-radius: 1rem;
   box-shadow: 0 var(--shadow-y-offset) var(--shadow-radius) var(--shadow-color); 
-}
-
-.centerer {
-display:flex;place-content:center;place-items:center;justify-content:center;
 }
 
 li {

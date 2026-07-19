@@ -47,11 +47,11 @@
     <code-box><code-body>BoyBaykiller: Nice!<br/>BoyBaykiller: Are you on an intel gpu?<br/>caps lock: nvidia<br/>caps lock: rtx 2060<br/>BoyBaykiller: ok, I know this seems stupid but can you make sure its actually using that with Console.WriteLine&lpar;GL.GetString&lpar;StringName.Renderer&rpar;&rpar;;<br/></code-body></code-box>
     <p>that prompted me to check whether opengl was actually rendering on my RX 6500m, because my laptop also has integrated graphics in it.</p>
     <p>it, uh, wasn&apos;t.</p>
-    <img alt="view of task manager showing that the dedicated gpu is unused at 0% and the integrated gpu is maxed out at 98%." src="./assets/task_man.2dbf1a45a10843a3fa95.webp" class="other-image" loading="lazy"></img>
+    <div class="centerer"><img alt="view of task manager showing that the dedicated gpu is unused at 0% and the integrated gpu is maxed out at 98%." src="./assets/task_man.2dbf1a45a10843a3fa95.webp" class="other-image" loading="lazy"></img></div>
     <p>to fix this, i added two lines of code that force AMD and nvidia drivers to use their proper gpus.</p>
     <code-box><code-lang>C</code-lang><code-body>__attribute__((dllexport)) int AmdPowerXpressRequestHighPerformance = 1;<br/>__attribute__((dllexport)) DWORD NvOptimusEnablement = 0x00000001;</code-body></code-box>
     <h3>the final result</h3>
-    <img alt="A highly postprocessed image of a player model stood amongst trees." src="./assets/hana_final.38625c2ee2f2747b0b15.webp" class="other-image" loading="lazy"></img>
+    <div class="centerer"><img alt="A highly postprocessed image of a player model stood amongst trees." src="./assets/hana_final.38625c2ee2f2747b0b15.webp" class="other-image" loading="lazy"></img></div>
     <separator></separator><p style="margin-bottom: 0;padding-bottom:0;">that&apos;s the end of this post. thanks for reading!<br/><a href="#intro">back to top &#x2934;</a></p>
   </div>
 </div>

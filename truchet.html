@@ -7,11 +7,11 @@
     <p>wow, it&apos;s been more than a year since my last blog post. i suppose that&apos;s fitting, though, since this year&apos;s been a doozy.</p>
     <p>well, i have some more time now, and i&apos;ve got so much energy to try some new stuff. i&apos;ve been inspired especially by some graphics programming demos that were posted in our cs club&apos;s show-and-tell channel, as well as the revision demoparty&apos;s shader showdown. i still remember the first time i saw live shader coding; i was genuinely amazed at how much they were able to pull off in just 25 minutes, as well as the level of polish they were able to deliver.</p>
     <p>revision 2025 just happened, and shader showdown was once again pretty awesome. while the main event was the addition of compute shaders, one part of flopine&apos;s submission really caught my eye.</p>
-    <img alt="flopine&apos;s shader showdown submission" src="./assets/chrome_RuryzLBmsZ.webp" class="other-image" loading="lazy"></img>
+    <div class="centerer"><img alt="flopine&apos;s shader showdown submission" src="./assets/chrome_RuryzLBmsZ.webp" class="other-image" loading="lazy"></img></div>
     <p>it&apos;s such an elegant pattern, and i wanted to go through my own process of making it in the most optimized way. in the end, i learned things i never knew about GLSL and discovered the really welcoming community on shadertoy.</p>
     <h3>my first attempt</h3>
     <a href="https://www.shadertoy.com/view/tcc3z2">
-      <img alt="a still of my first try at this shader." src="./assets/tr1.webp" class="other-image" loading="lazy"></img>
+      <div class="centerer"><img alt="a still of my first try at this shader." src="./assets/tr1.webp" class="other-image" loading="lazy"></img></div>
     </a>
     <p>the general idea is as follows:</p>
     <ul>
@@ -25,12 +25,12 @@
     <p>the issue here, as fabriceneyret2 pointed out in their comment, is that arrays are slow in GLSL, and that i&apos;m not doing any antialiasing &lpar;which i can get for free!&rpar;. surely, i could find a new way to fix these issues.</p>
     <h3>my second go</h3>
     <a href="https://www.shadertoy.com/view/tctGRf">
-      <img alt="a still of my second try at this shader." src="./assets/tr2.webp" class="other-image" loading="lazy"></img>
+      <div class="centerer"><img alt="a still of my second try at this shader." src="./assets/tr2.webp" class="other-image" loading="lazy"></img></div>
     </a>
     <p>now we&apos;re talking. let&apos;s take a look at what&apos;s different now!</p>
     <code-box><code-lang>GLSL</code-lang><code-body>vec4<br/>truchet(vec2 p, float r, float w)<br/>{<br/>  float hr = r / 2.;<br/>  float hw = w / 2.;<br/><br/>  vec2 b = floor(p / r) * r;<br/>  vec2 c = b + vec2(hr);<br/>  float h = float(hash(uvec2(abs(c * 100.))) % 4u);<br/>  float i = 3. - h;<br/><br/>  vec2 a0 = b + vec2(mod(h, 2.) * r, floor(h / 2.) * r);<br/>  vec2 a1 = b + vec2(mod(i, 2.) * r, floor(i / 2.) * r);<br/><br/>  float d1 = distance(p, a0);<br/>  float d2 = distance(p, a1);<br/><br/>  float d = min(d1, d2);<br/><br/>  vec4 glow = vec4(<br/>    color(triangle(itime * 0.125, 3., 1.)), <br/>    (1. - (abs(d - hr) - hw) / w) * 0.5<br/>  );<br/><br/>  return mix(vec4(1.), glow, smoothstep(hw, hw + 1.414, abs(d - hr)));<br/>}</code-body></code-box>
     <p>alright, so i got rid of the array! instead, we have some math. the idea is that we pick a hash the same way as above, but instead of indexing into an array, we treat that hash as one of the four corners of our cell! then, once we pick one corner of our cell, we can pick the diagonally opposing corner using <code-span>3 - h</code-span> where <code-span>h</code-span> is the first corner we picked.</p>
-    <img alt="explanation of the calculation for the opposite corner. we simply subtract the corner index from 3." src="./assets/truchet_expl.webp" class="other-image" loading="lazy"></img>
+    <div class="centerer"><img alt="explanation of the calculation for the opposite corner. we simply subtract the corner index from 3." src="./assets/truchet_expl.webp" class="other-image" loading="lazy"></img></div>
     <h3>final product</h3>
     <p>check out the full shader on <a href="https://www.shadertoy.com/view/tctGRf">shadertoy</a>!</p>
     <separator></separator><p style="margin-bottom: 0;padding-bottom:0;">that&apos;s the end of this post. thanks for reading!<br/><a href="#intro">back to top &#x2934;</a></p>

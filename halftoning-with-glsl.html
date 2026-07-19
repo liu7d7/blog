@@ -45,7 +45,7 @@
     <p>
     to get the radius of each circle, i computed the average color of four pixels that surrounded each circle&apos;s center. then, deciding whether to subtract color from that pixel is easy: if the average color is x% magenta, then fill the circle that covers x% of the square. of course, it&apos;s impossible to get a circle to fill a square without it going over, so this calculation must be repeated for each neighboring square, too.
     </p>
-    <img alt="Halftoning explanation; digital circles are used to simulate the effects of blending dots of ink on paper." src="./assets/halftoning expl.d133c2f3231ae0b18469.webp" class="other-image" loading="lazy"></img>
+    <div class="centerer"><img alt="Halftoning explanation; digital circles are used to simulate the effects of blending dots of ink on paper." src="./assets/halftoning expl.d133c2f3231ae0b18469.webp" class="other-image" loading="lazy"></img></div>
     <p>
     this works well on its own, but in order to get a better result, i had to blur the image first so that sharp edges weren&apos;t rendered badly. the unmodified code only samples the four corners of each square, so the average color of all the pixels in the square isn&apos;t taken into account. by blurring the image beforehand, we can save samples and still get the averaged out result when sampling only the corners. the end result is what you see at the top of your screen!
     </p>
